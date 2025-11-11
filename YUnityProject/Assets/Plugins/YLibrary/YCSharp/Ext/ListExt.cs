@@ -14,7 +14,8 @@ namespace YCSharp
         {
             if (filterCondition != null)
             {
-                for (int i = list.Count - 1; i >= 0; i--)
+                int totalCount = list.Count;
+                for (int i = totalCount - 1; i >= 0; i--)
                 {
                     if (filterCondition.Invoke(list[i]))
                     {
@@ -22,6 +23,19 @@ namespace YCSharp
                     }
                 }
             }
+        }
+        public static void RemoveDuplicate<T>(this List<T> list)
+        {
+            List<T> newList = new List<T>();
+            list.For(null, null, data =>
+            {
+                if (!newList.Contains(data.element))
+                {
+                    newList.Add(data.element);
+                }
+            });
+            list.Clear();
+            list.AddRange(newList);
         }
         public static void AddIfNotContain<T>(this List<T> list, T element)
         {
