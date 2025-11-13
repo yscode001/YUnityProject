@@ -25,22 +25,9 @@ namespace YUnity
             rootGO.AddComponent<UIStackMag>().Init();
             rootGO.AddComponent<SceneMag>().Init();
             rootGO.AddComponent<AudioMag>().Init();
-            rootGO.AddComponent<QueueMag>().Init();
-            rootGO.AddComponent<TimeTaskMag>().Init();
             rootGO.AddComponent<ABLoadUtil>().Init();
             rootGO.AddComponent<HttpMag>().Init();
             rootGO.AddComponent<AsyncImage>().Init();
-        }
-    }
-    public partial class YSRoot
-    {
-        /// <summary>
-        /// 逻辑驱动(队列任务和定时任务)
-        /// </summary>
-        public void LogicTick()
-        {
-            QueueMag.Instance?.LogicTick();
-            TimeTaskMag.Instance?.LogicTick();
         }
     }
 }
