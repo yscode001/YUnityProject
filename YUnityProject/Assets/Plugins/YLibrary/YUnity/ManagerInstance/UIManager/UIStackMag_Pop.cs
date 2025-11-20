@@ -1,0 +1,47 @@
+using System;
+using System.Linq;
+
+namespace YUnity
+{
+    public partial class UIStackMag
+    {
+        /// <summary>
+        /// Pop掉栈顶页面
+        /// </summary>
+        /// <param name="popReason"></param>
+        /// <param name="popAni"></param>
+        /// <param name="complete"></param>
+        public void Pop(PopReason popReason, PopAni popAni, Action complete = null)
+        {
+            if (Stack.Count == 0 || IsPushingOrPoping) { return; }
+            IsPushingOrPoping = true;
+
+            // 1、计算需要pop掉的页面，并从栈中移除
+            UIStackBaseWnd willPopWnd = GetTopWnd();
+            Stack.Remove(willPopWnd);
+
+            // 2、整理页面可见性
+            if (willPopWnd.PageType == PageType.NewPage)
+            {
+                VisibilityChange();
+            }
+
+            // 3、执行pop动画
+            willPopWnd.RunPopAni(popAni, () =>
+            {
+                // 4、动画完成，本页面退出
+                willPopWnd.OnExit(popReason);
+
+                // 5、底下的页面恢复
+                if (Stack.Count > 0)
+                {
+                    Stack.LastOrDefault().OnResume();
+                }
+
+                // 6、完成
+                complete?.Invoke();
+                IsPushingOrPoping = false;
+            });
+        }
+    }
+}

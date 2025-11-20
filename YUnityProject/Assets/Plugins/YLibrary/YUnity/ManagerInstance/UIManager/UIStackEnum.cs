@@ -6,7 +6,7 @@
 namespace YUnity
 {
     /// <summary>
-    /// 页面类型(新页面or新弹框)
+    /// 页面类型(新页面 or 新弹框)
     /// </summary>
     public enum PageType
     {
@@ -23,19 +23,6 @@ namespace YUnity
         OnPause,
         OnResume,
         OnExit,
-    }
-
-    /// <summary>
-    /// Pop方式
-    /// </summary>
-    public enum PopType
-    {
-        Pop,
-        PopCount,
-        PopToRoot,
-        PopAll,
-        PopMiddleAll,
-        PopBottomAll,
     }
 
     /// <summary>

@@ -16,21 +16,14 @@ namespace YUnity
         [SerializeField] protected Image MaskBGImg;
 
         /// <summary>
-        /// 内容容器，做 Push 或 Pop 动画使用
+        /// 页面内容的容器，做 Push 或 Pop 动画使用
         /// </summary>
-        [Header("内容容器，做 Push 或 Pop 动画使用")]
+        [Header("页面内容的容器，做 Push 或 Pop 动画使用")]
         [SerializeField] protected RectTransform ContentContainerRT;
 
-        /// <summary>
-        /// 页面类型，新页面 or 新弹框
-        /// </summary>
         public PageType PageType { get; private set; } = PageType.NewPage;
 
         private BehaviorSubject<PageState> _pageState = null;
-
-        /// <summary>
-        /// 页面状态
-        /// </summary>
         public BehaviorSubject<PageState> PageState
         {
             get
@@ -44,7 +37,7 @@ namespace YUnity
     #region 自定义生命周期函数
     public partial class UIStackBaseWnd
     {
-        public virtual void OnPush(UIStackBaseWnd bottomWnd)
+        public virtual void OnPush()
         {
             CanvasGroupY.alpha = 1;
             CanvasGroupY.blocksRaycasts = true;
@@ -53,7 +46,8 @@ namespace YUnity
                 PageState.OnNext(YUnity.PageState.OnPush);
             }
         }
-        public virtual void OnPause(UIStackBaseWnd topWnd)
+
+        public virtual void OnPause()
         {
             CanvasGroupY.blocksRaycasts = false;
             if (PageState.Value != YUnity.PageState.OnPause)
@@ -62,7 +56,7 @@ namespace YUnity
             }
         }
 
-        public virtual void OnResume(UIStackBaseWnd popedWnd)
+        public virtual void OnResume()
         {
             CanvasGroupY.blocksRaycasts = true;
             if (PageState.Value != YUnity.PageState.OnResume)
@@ -78,6 +72,8 @@ namespace YUnity
             {
                 PageState.OnNext(YUnity.PageState.OnExit);
             }
+            PageState.OnCompleted();
+            PageState.Dispose();
             DestroyImmediate(gameObject);
         }
     }

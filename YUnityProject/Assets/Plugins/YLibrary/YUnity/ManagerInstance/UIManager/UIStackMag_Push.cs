@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace YUnity
 {
-    #region push
     public partial class UIStackMag
     {
         public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, PushAni pushAni, Action complete = null)
@@ -17,28 +16,26 @@ namespace YUnity
             UIStackBaseWnd bottomWnd = GetTopWnd();
             if (bottomWnd != null)
             {
-                bottomWnd.OnPause(wnd);
+                bottomWnd.OnPause();
             }
             // 再添加新页面
             wnd.RectTransformY.SetParent(parent, false);
             wnd.SetAct(true);
             wnd.SetupPageTypeAndRunPushAni(pageType, pushAni, () =>
             {
-                // 新页面添加完成，入栈
-                wnd.OnPush(bottomWnd);
+                // 新页面push动画完成
+                wnd.OnPush();
+                // 入栈
                 Stack.Add(wnd);
                 if (pageType == PageType.NewPage)
                 {
-                    // 如果添加的是新页面，底下的页面可以隐藏
-                    if (bottomWnd != null)
-                    {
-                        bottomWnd.SetAct(false);
-                    }
+                    // 如果添加的是新页面，整理页面可见性
+                    VisibilityChange();
                 }
-                IsPushingOrPoping = false;
+                // 完成
                 complete?.Invoke();
+                IsPushingOrPoping = false;
             });
         }
     }
-    #endregion
 }
