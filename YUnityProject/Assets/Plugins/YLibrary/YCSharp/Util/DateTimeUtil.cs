@@ -52,4 +52,21 @@ namespace YCSharp
             return TimeStampStartTime.AddMilliseconds(longTimeStamp).ToLocalTime();
         }
     }
+
+    public static class DateTimeExt
+    {
+        /// <summary>
+        /// DateTime转换为10位时间戳（单位：秒）
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public static long ToTimeStamp(this DateTime dateTime) => DateTimeUtil.DateTimeToTimeStamp(dateTime);
+
+        /// <summary>
+        /// DateTime转换为13位时间戳（单位：毫秒）
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public static long ToLongTimeStamp(this DateTime dateTime) => DateTimeUtil.DateTimeToLongTimeStamp(dateTime);
+    }
 }
