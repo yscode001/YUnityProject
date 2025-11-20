@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace YUnity
@@ -17,7 +18,7 @@ namespace YUnity
             if (Stack.Count == 0 || popCount <= 0 || IsPushingOrPoping) { return; }
             IsPushingOrPoping = true;
 
-            // 计算需要pop掉的页面
+            // 1、计算需要pop掉的页面，并从栈中移除
             int willPopTotalCount = Mathf.Min(popCount, Stack.Count);
             List<UIStackBaseWnd> willPopWnds = new List<UIStackBaseWnd>();
             for (int i = Stack.Count - 1; i >= 0; i--)
@@ -30,17 +31,24 @@ namespace YUnity
                 Stack.RemoveAt(i);
             }
 
-            // 然后先整理页面可见性
+            // 2、整理页面可见性
             VisibilityChange();
 
-            // 然后执行pop
+            // 3、退出页面
             foreach (var item in willPopWnds)
             {
                 item.OnExit(popReason);
             }
 
-            // 再恢复底下的页面
-            AfterPopResumeBottomWnd(complete);
+            // 4、底下的页面恢复
+            if (Stack.Count > 0)
+            {
+                Stack.LastOrDefault().OnResume();
+            }
+
+            // 5、完成
+            IsPushingOrPoping = false;
+            complete?.Invoke();
         }
     }
 }

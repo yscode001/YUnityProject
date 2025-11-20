@@ -33,8 +33,8 @@ namespace YUnity
                     VisibilityChange();
                 }
                 // 完成
-                complete?.Invoke();
                 IsPushingOrPoping = false;
+                complete?.Invoke();
             });
         }
     }

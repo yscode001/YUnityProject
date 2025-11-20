@@ -39,8 +39,8 @@ namespace YUnity
                 }
 
                 // 6、完成
-                complete?.Invoke();
                 IsPushingOrPoping = false;
+                complete?.Invoke();
             });
         }
     }

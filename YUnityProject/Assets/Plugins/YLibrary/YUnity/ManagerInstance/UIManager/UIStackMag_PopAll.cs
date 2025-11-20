@@ -19,8 +19,8 @@ namespace YUnity
                 Stack[i].OnExit(popReason);
             }
 
-            complete?.Invoke();
             IsPushingOrPoping = false;
+            complete?.Invoke();
         }
     }
 }
