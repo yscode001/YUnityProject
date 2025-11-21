@@ -11,9 +11,13 @@ namespace YUnity
         /// </summary>
         /// <param name="popReason"></param>
         /// <param name="complete"></param>
-        public void PopToRoot(PopReason popReason, Action complete = null)
+        public void PopToRoot(PopReason popReason, Action<bool> complete = null)
         {
-            if (Stack.Count <= 1 || IsPushingOrPoping) { return; }
+            if (Stack.Count <= 1 || IsPushingOrPoping)
+            {
+                complete?.Invoke(false);
+                return;
+            }
             IsPushingOrPoping = true;
 
             // 1、计算需要pop掉的页面，并从栈中移除
@@ -41,7 +45,7 @@ namespace YUnity
 
             // 5、完成
             IsPushingOrPoping = false;
-            complete?.Invoke();
+            complete?.Invoke(true);
         }
     }
 }

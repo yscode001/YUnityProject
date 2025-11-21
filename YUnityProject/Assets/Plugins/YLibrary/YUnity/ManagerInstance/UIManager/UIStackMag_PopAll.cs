@@ -9,9 +9,13 @@ namespace YUnity
         /// </summary>
         /// <param name="popReason"></param>
         /// <param name="complete"></param>
-        public void PopAll(PopReason popReason, Action complete = null)
+        public void PopAll(PopReason popReason, Action<bool> complete = null)
         {
-            if (Stack.Count == 0 || IsPushingOrPoping) { return; }
+            if (Stack.Count == 0 || IsPushingOrPoping)
+            {
+                complete?.Invoke(false);
+                return;
+            }
             IsPushingOrPoping = true;
 
             for (int i = Stack.Count - 1; i >= 0; i--)
@@ -20,7 +24,7 @@ namespace YUnity
             }
 
             IsPushingOrPoping = false;
-            complete?.Invoke();
+            complete?.Invoke(true);
         }
     }
 }

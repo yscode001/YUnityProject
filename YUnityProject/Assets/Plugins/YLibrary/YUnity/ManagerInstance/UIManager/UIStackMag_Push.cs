@@ -5,10 +5,11 @@ namespace YUnity
 {
     public partial class UIStackMag
     {
-        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, PushAni pushAni, Action complete = null)
+        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, PushAni pushAni, Action<bool> complete = null)
         {
             if (wnd == null || Contains(wnd) || IsPushingOrPoping)
             {
+                complete?.Invoke(false);
                 return;
             }
             IsPushingOrPoping = true;
@@ -34,7 +35,7 @@ namespace YUnity
                 }
                 // 完成
                 IsPushingOrPoping = false;
-                complete?.Invoke();
+                complete?.Invoke(true);
             });
         }
     }

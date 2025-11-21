@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UniRx;
 using UnityEngine;
@@ -211,6 +212,110 @@ namespace YUnity
                 AniSequence.Join(MaskBGImg.DOColor(MaskColorTouMing, AniSeconds));
             }
             AniSequence.OnComplete(complete);
+        }
+    }
+    #endregion
+    #region 添加push快捷方式，实质还是调用的UIStackMag的push方法
+    public partial class UIStackBaseWnd
+    {
+        /// <summary>
+        /// Push新页面或新弹框，实质还是调用的UIStackMag的push方法
+        /// </summary>
+        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, PushAni pushAni, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.Push(wnd, parent, pageType, pushAni, complete);
+        }
+
+        /// <summary>
+        /// Push自己，实质还是调用的UIStackMag的push方法
+        /// </summary>
+        public void PushThis(Transform parent, PageType pageType, PushAni pushAni, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.Push(this, parent, pageType, pushAni, complete);
+        }
+
+        /// <summary>
+        /// Push自己，实质还是调用的UIStackMag的push方法
+        /// </summary>
+        public void PushSelf(Transform parent, PageType pageType, PushAni pushAni, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.Push(this, parent, pageType, pushAni, complete);
+        }
+    }
+    #endregion
+    #region 添加pop的快捷方式，实质还是调用的UIStackMag的pop方法
+    public partial class UIStackBaseWnd
+    {
+        /// <summary>
+        /// Pop掉栈顶页面，实质还是调用的UIStackMag的pop方法
+        /// </summary>
+        public void Pop(PopReason popReason, PopAni popAni, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.Pop(popReason, popAni, complete);
+        }
+
+        /// <summary>
+        /// Pop所有页面，实质还是调用的UIStackMag的pop方法
+        /// </summary>
+        public void PopAll(PopReason popReason, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.PopAll(popReason, complete);
+        }
+
+        /// <summary>
+        /// Pop所有底下的页面，除了栈顶页面，实质还是调用的UIStackMag的pop方法
+        /// </summary>
+        public void PopBottoms(PopReason popReason, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.PopBottoms(popReason, complete);
+        }
+
+        /// <summary>
+        /// Pop指定数量的页面，即连续Pop几次，实质还是调用的UIStackMag的pop方法
+        /// </summary>
+        public void PopCount(int popCount, PopReason popReason, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.PopCount(popCount, popReason, complete);
+        }
+
+        /// <summary>
+        /// Pop所有中间的页面，除了栈顶和栈底页面，实质还是调用的UIStackMag的pop方法
+        /// </summary>
+        public void PopMiddles(PopReason popReason, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.PopMiddles(popReason, complete);
+        }
+
+        /// <summary>
+        /// Pop至栈底页面，实质还是调用的UIStackMag的pop方法
+        /// </summary>
+        public void PopToRoot(PopReason popReason, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.PopToRoot(popReason, complete);
+        }
+
+        /// <summary>
+        /// Pop掉指定的页面，实质还是调用的UIStackMag的pop方法
+        /// </summary>
+        public void PopWnd(UIStackBaseWnd wnd, PopReason popReason, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.PopWnd(wnd, popReason, complete);
+        }
+
+        /// <summary>
+        /// Pop掉自己，实质还是调用的UIStackMag的pop方法
+        /// </summary>
+        public void PopThis(PopReason popReason, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.PopWnd(this, popReason, complete);
+        }
+
+        /// <summary>
+        /// Pop掉自己，实质还是调用的UIStackMag的pop方法
+        /// </summary>
+        public void PopSelf(PopReason popReason, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.PopWnd(this, popReason, complete);
         }
     }
     #endregion
