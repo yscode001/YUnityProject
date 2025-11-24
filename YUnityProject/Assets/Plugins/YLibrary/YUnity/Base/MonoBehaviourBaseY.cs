@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -659,37 +657,6 @@ namespace YUnity
             // x, y 取值在 xEdge 和 yEdge 之外时代表在视角范围外
             if (viewPos.x < xEdge || viewPos.y < yEdge || viewPos.x > 1f - xEdge || viewPos.y > 1f - yEdge) { return false; }
             return true;
-        }
-    }
-    #endregion
-
-    #region 常用方法
-    public partial class MonoBehaviourBaseY
-    {
-        private IEnumerator DoAfterDelayAtor(float delaySeconds, Action delayAction)
-        {
-            yield return new WaitForSeconds(delaySeconds);
-            delayAction?.Invoke();
-        }
-
-        /// <summary>
-        /// 使用协成延迟执行
-        /// </summary>
-        /// <param name="delaySeconds">延迟秒数</param>
-        /// <param name="delayAction">延迟执行的行为</param>
-        /// <returns></returns>
-        public Coroutine DoAfterDelay(float delaySeconds, Action delayAction)
-        {
-            if (delaySeconds <= 0)
-            {
-                delayAction?.Invoke();
-                return null;
-            }
-            if (!gameObject.activeInHierarchy)
-            {
-                return null;
-            }
-            return StartCoroutine(DoAfterDelayAtor(delaySeconds, delayAction));
         }
     }
     #endregion

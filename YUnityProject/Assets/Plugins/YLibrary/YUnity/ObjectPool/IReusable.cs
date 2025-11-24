@@ -1,6 +1,3 @@
-using System;
-using UnityEngine;
-
 namespace YUnity
 {
     /// <summary>
@@ -17,18 +14,14 @@ namespace YUnity
         /// <summary>
         /// 调用对象池，将游戏物体进行回收
         /// </summary>
-        /// <param name="delaySeconds">延迟回收秒数</param>
-        /// <param name="doBeforeUnSpawn">真正回收之前做的操作</param>
         /// <returns></returns>
-        Coroutine UnSpawnFromObjectPool(float delaySeconds = 0, Action doBeforeUnSpawn = null);
+        void UnSpawnFromObjectPool();
 
         /// <summary>
         /// 调用对象池，将游戏物体进行释放
         /// </summary>
-        /// <param name="delaySeconds">延迟释放秒数</param>
-        /// <param name="immediage">到时间后是否立即释放</param>
-        /// <param name="doBeforeRelease">真正释放之前做的操作</param>
+        /// <param name="immediage">是否立即释放</param>
         /// <returns></returns>
-        Coroutine ReleaseFromObjectPool(float delaySeconds = 0, bool immediage = false, Action doBeforeRelease = null);
+        void ReleaseFromObjectPool(bool immediage = false);
     }
 }
