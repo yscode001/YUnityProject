@@ -3,10 +3,34 @@ using UnityEngine;
 
 namespace YUIControl
 {
-    public class I18N_ImageEditor : Editor
+    [CustomEditor(typeof(I18N_Image))]
+    public class I18N_ImageEditor : UnityEditor.UI.ImageEditor
     {
+        private SerializedProperty _jianProp;
+        private SerializedProperty _fanProp;
+        private SerializedProperty _showjianProp;
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            // 关联字段
+            _jianProp = serializedObject.FindProperty("Jian");
+            _fanProp = serializedObject.FindProperty("Fan");
+            _showjianProp = serializedObject.FindProperty("ShowJian");
+        }
+
         public override void OnInspectorGUI()
         {
+            EditorGUILayout.LabelField("国际化属性", EditorStyles.boldLabel);
+            serializedObject.Update();
+            EditorGUILayout.PropertyField(_jianProp, new GUIContent("Jian"), true, GUILayout.ExpandWidth(true));
+            EditorGUILayout.PropertyField(_fanProp, new GUIContent("Fan"), true, GUILayout.ExpandWidth(true));
+            EditorGUILayout.PropertyField(_showjianProp);
+            serializedObject.ApplyModifiedProperties();
+
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("基础属性", EditorStyles.boldLabel);
             base.OnInspectorGUI();
         }
 
@@ -16,7 +40,8 @@ namespace YUIControl
             GameObject go = new GameObject("I18N_Image");
             go.layer = LayerMask.NameToLayer("UI");
 
-            go.AddComponent<I18N_Image>();
+            I18N_Image i18N_Image = go.AddComponent<I18N_Image>();
+            i18N_Image.raycastTarget = false;
 
             RectTransform rt = (RectTransform)go.transform;
             Transform parent;

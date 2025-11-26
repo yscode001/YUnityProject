@@ -3,8 +3,7 @@ using UnityEngine.UI;
 
 namespace YUIControl
 {
-    [RequireComponent(typeof(Image))]
-    public class I18N_Image : MonoBehaviour
+    public class I18N_Image : Image
     {
         [Header("简体")]
         [SerializeField] private Sprite Jian;
@@ -15,44 +14,41 @@ namespace YUIControl
         [Header("Editor预览：是否显示简体")]
         [SerializeField] private bool ShowJian = true;
 
-        private Image image;
-        private Image Image
+        private bool IsSetedBySprite = false;
+
+        public new Sprite sprite
         {
-            get
+            get => base.sprite;
+            set
             {
-                if (image == null)
-                {
-                    image = GetComponent<Image>();
-                }
-                return image;
+                IsSetedBySprite = true;
+                base.sprite = value;
+                SetAllDirty();
             }
         }
 
-        public void Init(bool is_zhcn)
+        public void Init(LanguageEnum languageEnum)
         {
-            if (is_zhcn && Jian != null && Image.sprite != Jian)
+            if (IsSetedBySprite == false)
             {
-                Image.sprite = Jian;
-            }
-            else if (!is_zhcn && Fan != null && Image.sprite != Fan)
-            {
-                Image.sprite = Fan;
+                sprite = languageEnum == LanguageEnum.zhch ? Jian : Fan;
             }
         }
 
 #if UNITY_EDITOR
         // 在编辑器中实时预览效果
-        private void OnValidate()
+        protected override void OnValidate()
         {
+            base.OnValidate();
             if (UnityEditor.EditorApplication.isPlaying == false)
             {
-                if (ShowJian && Jian != null && Image.sprite != Jian)
+                if (ShowJian && Jian != null && sprite != Jian)
                 {
-                    Image.sprite = Jian;
+                    sprite = Jian;
                 }
-                else if (!ShowJian && Fan != null && Image.sprite != Fan)
+                else if (!ShowJian && Fan != null && sprite != Fan)
                 {
-                    Image.sprite = Fan;
+                    sprite = Fan;
                 }
             }
         }
