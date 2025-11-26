@@ -1,13 +1,12 @@
 using System.Linq;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
-using UnityEditor.UI;
 using UnityEngine;
 
 namespace YUIControl
 {
     [CustomEditor(typeof(ProgressBarImage))]
-    public class ProgressBarImageInspector : ImageEditor
+    public class ProgressBarImageInspector : UnityEditor.UI.ImageEditor
     {
         SerializedProperty m_FillMethod;
         SerializedProperty m_FillOrigin;
@@ -154,6 +153,35 @@ namespace YUIControl
             NativeSizeButtonGUI();
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+        [MenuItem("GameObject/UI/ProgressBarImage")]
+        private static void GenerateImage()
+        {
+            GameObject go = new GameObject("ProgressBarImage");
+            go.layer = LayerMask.NameToLayer("UI");
+
+            ProgressBarImage progressBarImage = go.AddComponent<ProgressBarImage>();
+            progressBarImage.raycastTarget = false;
+
+            RectTransform rt = (RectTransform)go.transform;
+            Transform parent;
+            if (Selection.activeTransform)
+            {
+                parent = Selection.activeTransform;
+            }
+            else
+            {
+                parent = FindObjectOfType<Canvas>().transform;
+            }
+            if (parent != null)
+            {
+                rt.SetParent(parent);
+            }
+            rt.localPosition = Vector3.zero;
+            rt.localScale = Vector3.one;
+            rt.sizeDelta = new Vector2(400, 20);
+            Selection.activeGameObject = go;
         }
     }
 }

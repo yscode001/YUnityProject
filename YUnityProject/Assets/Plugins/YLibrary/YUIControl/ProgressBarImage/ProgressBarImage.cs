@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace YUIControl
 {
-    public class ProgressBarImage : Image
+    public class ProgressBarImage : UnityEngine.UI.Image
     {
         protected override void OnPopulateMesh(VertexHelper toFill)
         {

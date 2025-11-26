@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace YUIControl
 {
-    public class I18N_Text : Text
+    public class I18N_Text : UnityEngine.UI.Text
     {
         [Header("简体")]
         [TextArea(3, 10)]

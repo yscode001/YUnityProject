@@ -1,12 +1,10 @@
-using TMPro;
-using TMPro.EditorUtilities;
 using UnityEditor;
 using UnityEngine;
 
 namespace YUIControl
 {
     [CustomEditor(typeof(I18N_TMP_UGUI))]
-    public class I18N_TMP_UGUIEditor : TMP_EditorPanelUI
+    public class I18N_TMP_UGUIEditor : TMPro.EditorUtilities.TMP_EditorPanelUI
     {
         private SerializedProperty _jianProp;
         private SerializedProperty _fanProp;
@@ -37,7 +35,7 @@ namespace YUIControl
         }
 
         [MenuItem("GameObject/UI/I18N_TMP_UGUI")]
-        private static void GenerateTextY()
+        private static void GenerateText()
         {
             GameObject go = new GameObject("I18N_TMP_UGUI");
             go.layer = LayerMask.NameToLayer("UI");

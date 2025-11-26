@@ -35,7 +35,7 @@ namespace YUIControl
         }
 
         [MenuItem("GameObject/UI/I18N_Image")]
-        private static void GenerateImageY()
+        private static void GenerateImage()
         {
             GameObject go = new GameObject("I18N_Image");
             go.layer = LayerMask.NameToLayer("UI");

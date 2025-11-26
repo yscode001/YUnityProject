@@ -1,9 +1,8 @@
-using TMPro;
 using UnityEngine;
 
 namespace YUIControl
 {
-    public class I18N_TMP_UGUI : TextMeshProUGUI
+    public class I18N_TMP_UGUI : TMPro.TextMeshProUGUI
     {
         [Header("简体")]
         [TextArea(3, 10)]

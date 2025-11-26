@@ -35,7 +35,7 @@ namespace YUIControl
         }
 
         [MenuItem("GameObject/UI/I18N_Text")]
-        private static void GenerateTextY()
+        private static void GenerateText()
         {
             GameObject go = new GameObject("I18N_Text");
             go.layer = LayerMask.NameToLayer("UI");

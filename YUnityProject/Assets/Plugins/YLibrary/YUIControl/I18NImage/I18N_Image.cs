@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace YUIControl
 {
-    public class I18N_Image : Image
+    public class I18N_Image : UnityEngine.UI.Image
     {
         [Header("简体")]
         [SerializeField] private Sprite Jian;
