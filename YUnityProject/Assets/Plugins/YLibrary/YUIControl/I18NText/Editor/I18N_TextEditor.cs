@@ -43,7 +43,6 @@ namespace YUIControl
             I18N_Text text = go.AddComponent<I18N_Text>();
             // text.font = Resources.Load<Font>("Fonts/Font");
             text.fontSize = 26;
-            text.raycastTarget = false;
 
             RectTransform rt = (RectTransform)go.transform;
             Transform parent;

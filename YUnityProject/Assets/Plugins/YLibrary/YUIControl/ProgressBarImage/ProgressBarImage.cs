@@ -126,5 +126,13 @@ namespace YUIControl
                         new Vector2(x_uv[i2], y_uv));
             }
         }
+
+        #region 默认禁用交互
+        protected override void Reset()
+        {
+            base.Reset();
+            raycastTarget = false;
+        }
+        #endregion
     }
 }

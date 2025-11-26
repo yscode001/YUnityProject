@@ -40,8 +40,7 @@ namespace YUIControl
             GameObject go = new GameObject("I18N_Image");
             go.layer = LayerMask.NameToLayer("UI");
 
-            I18N_Image i18N_Image = go.AddComponent<I18N_Image>();
-            i18N_Image.raycastTarget = false;
+            go.AddComponent<I18N_Image>();
 
             RectTransform rt = (RectTransform)go.transform;
             Transform parent;

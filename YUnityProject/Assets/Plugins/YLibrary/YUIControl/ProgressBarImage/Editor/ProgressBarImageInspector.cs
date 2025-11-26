@@ -161,8 +161,7 @@ namespace YUIControl
             GameObject go = new GameObject("ProgressBarImage");
             go.layer = LayerMask.NameToLayer("UI");
 
-            ProgressBarImage progressBarImage = go.AddComponent<ProgressBarImage>();
-            progressBarImage.raycastTarget = false;
+            go.AddComponent<ProgressBarImage>();
 
             RectTransform rt = (RectTransform)go.transform;
             Transform parent;

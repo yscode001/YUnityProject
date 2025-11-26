@@ -37,6 +37,14 @@ namespace YUIControl
             }
         }
 
+        #region 默认禁用交互
+        protected override void Reset()
+        {
+            base.Reset();
+            raycastTarget = false;
+        }
+        #endregion
+
 #if UNITY_EDITOR
         // 在编辑器中实时预览效果
         protected override void OnValidate()
