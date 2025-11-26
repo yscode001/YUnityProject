@@ -43,8 +43,9 @@ namespace YUIControl
             go.layer = LayerMask.NameToLayer("UI");
 
             I18N_TMP_UGUI text = go.AddComponent<I18N_TMP_UGUI>();
-            text.font = Resources.Load<TMP_FontAsset>("Fonts/Font SDF");
+            // text.font = Resources.Load<TMP_FontAsset>("Fonts/Font SDF");
             text.fontSize = 26;
+            text.raycastTarget = false;
 
             RectTransform rt = (RectTransform)go.transform;
             Transform parent;

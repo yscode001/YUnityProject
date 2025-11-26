@@ -28,12 +28,12 @@ namespace YUIControl
             }
         }
 
-        public void Init(bool is_zhcn)
+        public void Init(LanguageEnum languageEnum)
         {
-            font = Resources.Load<TMP_FontAsset>("Fonts/Font SDF");
+            // font = Resources.Load<TMP_FontAsset>("Fonts/Font SDF");
             if (IsSetedByText == false)
             {
-                text = is_zhcn ? Jian : Fan;
+                text = languageEnum == LanguageEnum.zhch ? Jian : Fan;
             }
         }
 
@@ -55,11 +55,5 @@ namespace YUIControl
             }
         }
 #endif
-
-        #region 以下临时使用，用于Text转换为TMP
-        public void SetJianStr(string jian) { Jian = jian; }
-        public void SetFanStr(string fan) { Fan = fan; }
-        public void SetShowJian(bool showJian) { ShowJian = showJian; }
-        #endregion
     }
 }
