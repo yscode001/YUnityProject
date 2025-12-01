@@ -49,7 +49,7 @@ namespace YUnity
             });
         }
 
-        public void Pop(PopReason popReason, Sequence customPushAni, Action<bool> complete = null)
+        public void Pop(PopReason popReason, Sequence customPopAni, Action<bool> complete = null)
         {
             if (Stack.Count == 0 || IsPushingOrPoping)
             {
@@ -69,7 +69,7 @@ namespace YUnity
             }
 
             // 3、执行pop动画
-            if (customPushAni == null)
+            if (customPopAni == null)
             {
                 // 4、动画完成，本页面退出
                 willPopWnd.OnExit(popReason);
@@ -86,7 +86,7 @@ namespace YUnity
             }
             else
             {
-                customPushAni.onComplete += () =>
+                customPopAni.onComplete += () =>
                 {
                     // 4、动画完成，本页面退出
                     willPopWnd.OnExit(popReason);

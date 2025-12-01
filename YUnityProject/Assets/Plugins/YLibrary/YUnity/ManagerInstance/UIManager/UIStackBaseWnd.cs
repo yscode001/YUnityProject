@@ -285,9 +285,9 @@ namespace YUnity
         /// <summary>
         /// Pop掉栈顶页面，实质还是调用的UIStackMag的pop方法
         /// </summary>
-        public void Pop(PopReason popReason, Sequence customPushAni, Action<bool> complete = null)
+        public void Pop(PopReason popReason, Sequence customPopAni, Action<bool> complete = null)
         {
-            UIStackMag.Instance.Pop(popReason, customPushAni, complete);
+            UIStackMag.Instance.Pop(popReason, customPopAni, complete);
         }
 
         /// <summary>
