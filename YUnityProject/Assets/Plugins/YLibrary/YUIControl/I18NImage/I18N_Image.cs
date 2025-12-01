@@ -22,7 +22,6 @@ namespace YUIControl
             {
                 IsSetedBySprite = true;
                 base.sprite = value;
-                SetAllDirty();
             }
         }
 

@@ -24,7 +24,6 @@ namespace YUIControl
             {
                 IsSetedByText = true;
                 base.text = value;
-                SetAllDirty();
             }
         }
 

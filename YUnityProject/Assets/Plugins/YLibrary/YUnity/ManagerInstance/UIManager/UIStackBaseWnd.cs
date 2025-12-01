@@ -98,6 +98,10 @@ namespace YUnity
             }
             AniSequence = DOTween.Sequence();
         }
+        internal void SetupPageType(PageType pageType)
+        {
+            PageType = pageType;
+        }
         internal void SetupPageTypeAndRunPushAni(PageType pageType, PushAni pushAni, TweenCallback complete)
         {
             PageType = pageType;
@@ -227,6 +231,14 @@ namespace YUnity
         }
 
         /// <summary>
+        /// Push新页面或新弹框，实质还是调用的UIStackMag的push方法
+        /// </summary>
+        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, Sequence customPushAni, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.Push(wnd, parent, pageType, customPushAni, complete);
+        }
+
+        /// <summary>
         /// Push自己，实质还是调用的UIStackMag的push方法
         /// </summary>
         public void PushThis(Transform parent, PageType pageType, PushAni pushAni, Action<bool> complete = null)
@@ -237,9 +249,25 @@ namespace YUnity
         /// <summary>
         /// Push自己，实质还是调用的UIStackMag的push方法
         /// </summary>
+        public void PushThis(Transform parent, PageType pageType, Sequence customPushAni, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.Push(this, parent, pageType, customPushAni, complete);
+        }
+
+        /// <summary>
+        /// Push自己，实质还是调用的UIStackMag的push方法
+        /// </summary>
         public void PushSelf(Transform parent, PageType pageType, PushAni pushAni, Action<bool> complete = null)
         {
             UIStackMag.Instance.Push(this, parent, pageType, pushAni, complete);
+        }
+
+        /// <summary>
+        /// Push自己，实质还是调用的UIStackMag的push方法
+        /// </summary>
+        public void PushSelf(Transform parent, PageType pageType, Sequence customPushAni, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.Push(this, parent, pageType, customPushAni, complete);
         }
     }
     #endregion
@@ -252,6 +280,14 @@ namespace YUnity
         public void Pop(PopReason popReason, PopAni popAni, Action<bool> complete = null)
         {
             UIStackMag.Instance.Pop(popReason, popAni, complete);
+        }
+
+        /// <summary>
+        /// Pop掉栈顶页面，实质还是调用的UIStackMag的pop方法
+        /// </summary>
+        public void Pop(PopReason popReason, Sequence customPushAni, Action<bool> complete = null)
+        {
+            UIStackMag.Instance.Pop(popReason, customPushAni, complete);
         }
 
         /// <summary>
