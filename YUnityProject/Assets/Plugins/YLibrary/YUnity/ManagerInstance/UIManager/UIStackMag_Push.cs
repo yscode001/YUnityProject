@@ -40,7 +40,7 @@ namespace YUnity
             });
         }
 
-        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, Sequence customPushAni, Action<bool> complete = null)
+        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, Sequence pushAni, Action<bool> complete = null)
         {
             if (wnd == null || Contains(wnd) || IsPushingOrPoping)
             {
@@ -59,7 +59,7 @@ namespace YUnity
             wnd.SetupPageType(pageType);
             wnd.SetAct(true);
             // 执行自定义push动画
-            if (customPushAni == null)
+            if (pushAni == null)
             {
                 // 新页面push动画完成
                 wnd.OnPush();
@@ -76,7 +76,7 @@ namespace YUnity
             }
             else
             {
-                customPushAni.onComplete += () =>
+                pushAni.onComplete += () =>
                 {
                     // 新页面push动画完成
                     wnd.OnPush();

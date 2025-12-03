@@ -233,9 +233,9 @@ namespace YUnity
         /// <summary>
         /// Push新页面或新弹框，实质还是调用的UIStackMag的push方法
         /// </summary>
-        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, Sequence customPushAni, Action<bool> complete = null)
+        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, Sequence pushAni, Action<bool> complete = null)
         {
-            UIStackMag.Instance.Push(wnd, parent, pageType, customPushAni, complete);
+            UIStackMag.Instance.Push(wnd, parent, pageType, pushAni, complete);
         }
 
         /// <summary>
@@ -249,9 +249,9 @@ namespace YUnity
         /// <summary>
         /// Push自己，实质还是调用的UIStackMag的push方法
         /// </summary>
-        public void PushThis(Transform parent, PageType pageType, Sequence customPushAni, Action<bool> complete = null)
+        public void PushThis(Transform parent, PageType pageType, Sequence pushAni, Action<bool> complete = null)
         {
-            UIStackMag.Instance.Push(this, parent, pageType, customPushAni, complete);
+            UIStackMag.Instance.Push(this, parent, pageType, pushAni, complete);
         }
 
         /// <summary>
@@ -265,9 +265,9 @@ namespace YUnity
         /// <summary>
         /// Push自己，实质还是调用的UIStackMag的push方法
         /// </summary>
-        public void PushSelf(Transform parent, PageType pageType, Sequence customPushAni, Action<bool> complete = null)
+        public void PushSelf(Transform parent, PageType pageType, Sequence pushAni, Action<bool> complete = null)
         {
-            UIStackMag.Instance.Push(this, parent, pageType, customPushAni, complete);
+            UIStackMag.Instance.Push(this, parent, pageType, pushAni, complete);
         }
     }
     #endregion
