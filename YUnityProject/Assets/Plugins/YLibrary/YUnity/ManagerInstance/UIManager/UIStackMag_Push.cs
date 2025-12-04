@@ -23,6 +23,7 @@ namespace YUnity
             // 再添加新页面
             wnd.RectTransformY.SetParent(parent, false);
             wnd.SetAct(true);
+            wnd.BeforePush();
             wnd.SetupPageTypeAndRunPushAni(pageType, pushAni, () =>
             {
                 // 新页面push动画完成
@@ -58,6 +59,7 @@ namespace YUnity
             wnd.RectTransformY.SetParent(parent, false);
             wnd.SetupPageType(pageType);
             wnd.SetAct(true);
+            wnd.BeforePush();
             // 执行自定义push动画
             if (pushAni == null)
             {

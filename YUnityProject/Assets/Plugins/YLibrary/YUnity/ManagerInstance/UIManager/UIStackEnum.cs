@@ -19,10 +19,12 @@ namespace YUnity
     /// </summary>
     public enum PageState
     {
+        BeforePush,
         OnPush,
         OnPause,
         OnResume,
         OnExit,
+        UnKnown,
     }
 
     /// <summary>

@@ -29,7 +29,7 @@ namespace YUnity
         {
             get
             {
-                _pageState ??= new BehaviorSubject<PageState>(YUnity.PageState.OnPush);
+                _pageState ??= new BehaviorSubject<PageState>(YUnity.PageState.UnKnown);
                 return _pageState;
             }
         }
@@ -38,6 +38,13 @@ namespace YUnity
     #region 自定义生命周期函数
     public partial class UIStackBaseWnd
     {
+        public virtual void BeforePush()
+        {
+            if (PageState.Value != YUnity.PageState.BeforePush)
+            {
+                PageState.OnNext(YUnity.PageState.BeforePush);
+            }
+        }
         public virtual void OnPush()
         {
             CanvasGroupY.alpha = 1;
