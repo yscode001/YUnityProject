@@ -22,17 +22,17 @@ namespace YUnity
         [Header("页面内容的容器，做 Push 或 Pop 动画使用")]
         [SerializeField] protected RectTransform ContentContainerRT;
 
+        /// <summary>
+        /// 页面类型(新页面 or 新弹框)
+        /// </summary>
         public PageType PageType { get; private set; } = PageType.NewPage;
 
-        private BehaviorSubject<PageState> _pageState = null;
-        public BehaviorSubject<PageState> PageState
-        {
-            get
-            {
-                _pageState ??= new BehaviorSubject<PageState>(YUnity.PageState.UnKnown);
-                return _pageState;
-            }
-        }
+        private readonly BehaviorSubject<PageState> _pageState = new BehaviorSubject<PageState>(YUnity.PageState.UnKnown);
+
+        /// <summary>
+        /// 页面状态
+        /// </summary>
+        public IReadOnlyReactiveProperty<PageState> PageState => _pageState.ToReadOnlyReactiveProperty();
     }
     #endregion
     #region 自定义生命周期函数
@@ -40,48 +40,48 @@ namespace YUnity
     {
         public virtual void BeforePush()
         {
-            if (PageState.Value != YUnity.PageState.BeforePush)
+            if (_pageState.Value != YUnity.PageState.BeforePush)
             {
-                PageState.OnNext(YUnity.PageState.BeforePush);
+                _pageState.OnNext(YUnity.PageState.BeforePush);
             }
         }
         public virtual void OnPush()
         {
             CanvasGroupY.alpha = 1;
             CanvasGroupY.blocksRaycasts = true;
-            if (PageState.Value != YUnity.PageState.OnPush)
+            if (_pageState.Value != YUnity.PageState.OnPush)
             {
-                PageState.OnNext(YUnity.PageState.OnPush);
+                _pageState.OnNext(YUnity.PageState.OnPush);
             }
         }
 
         public virtual void OnPause()
         {
             CanvasGroupY.blocksRaycasts = false;
-            if (PageState.Value != YUnity.PageState.OnPause)
+            if (_pageState.Value != YUnity.PageState.OnPause)
             {
-                PageState.OnNext(YUnity.PageState.OnPause);
+                _pageState.OnNext(YUnity.PageState.OnPause);
             }
         }
 
         public virtual void OnResume()
         {
             CanvasGroupY.blocksRaycasts = true;
-            if (PageState.Value != YUnity.PageState.OnResume)
+            if (_pageState.Value != YUnity.PageState.OnResume)
             {
-                PageState.OnNext(YUnity.PageState.OnResume);
+                _pageState.OnNext(YUnity.PageState.OnResume);
             }
         }
 
         public virtual void OnExit(PopReason popReason)
         {
             CanvasGroupY.blocksRaycasts = false;
-            if (PageState.Value != YUnity.PageState.OnExit)
+            if (_pageState.Value != YUnity.PageState.OnExit)
             {
-                PageState.OnNext(YUnity.PageState.OnExit);
+                _pageState.OnNext(YUnity.PageState.OnExit);
             }
-            PageState.OnCompleted();
-            PageState.Dispose();
+            _pageState.OnCompleted();
+            _pageState.Dispose();
             DestroyImmediate(gameObject);
         }
     }
