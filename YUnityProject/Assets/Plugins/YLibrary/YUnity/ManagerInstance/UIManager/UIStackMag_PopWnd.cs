@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace YUnity
 {
@@ -7,17 +8,14 @@ namespace YUnity
         /// <summary>
         /// Pop掉指定的页面
         /// </summary>
-        /// <param name="wnd"></param>
-        /// <param name="popReason"></param>
-        /// <param name="complete"></param>
         public void PopWnd(UIStackBaseWnd wnd, PopReason popReason, Action<bool> complete = null)
         {
-            if (wnd == null || !Stack.Contains(wnd) || IsPushingOrPoping)
+            if (wnd == null || !_stack.Contains(wnd) || IsPushingOrPoping)
             {
                 complete?.Invoke(false);
                 return;
             }
-            if (wnd == GetTopWnd())
+            if (wnd == _stack.LastOrDefault())
             {
                 // 栈顶页面
                 Pop(popReason, PopAni.None, complete);
@@ -27,10 +25,10 @@ namespace YUnity
                 // 非栈顶元素
                 IsPushingOrPoping = true;
                 // 1、从栈中移除
-                Stack.Remove(wnd);
+                _stack.Remove(wnd);
 
                 // 2、整理页面可见性
-                VisibilityChange();
+                VisibilityChange_AfterStackChanged();
 
                 // 3、页面退出
                 wnd.OnExit(popReason);

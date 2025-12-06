@@ -27,7 +27,7 @@ namespace YUnity
         /// </summary>
         public PageType PageType { get; private set; } = PageType.NewPage;
 
-        private readonly BehaviorSubject<PageState> _pageState = new BehaviorSubject<PageState>(YUnity.PageState.UnKnown);
+        private readonly ReactiveProperty<PageState> _pageState = new ReactiveProperty<PageState>(YUnity.PageState.UnKnown);
 
         /// <summary>
         /// 页面状态
@@ -42,7 +42,7 @@ namespace YUnity
         {
             if (_pageState.Value != YUnity.PageState.BeforePush)
             {
-                _pageState.OnNext(YUnity.PageState.BeforePush);
+                _pageState.Value = YUnity.PageState.BeforePush;
             }
         }
         public virtual void OnPush()
@@ -51,7 +51,7 @@ namespace YUnity
             CanvasGroupY.blocksRaycasts = true;
             if (_pageState.Value != YUnity.PageState.OnPush)
             {
-                _pageState.OnNext(YUnity.PageState.OnPush);
+                _pageState.Value = YUnity.PageState.OnPush;
             }
         }
 
@@ -60,7 +60,7 @@ namespace YUnity
             CanvasGroupY.blocksRaycasts = false;
             if (_pageState.Value != YUnity.PageState.OnPause)
             {
-                _pageState.OnNext(YUnity.PageState.OnPause);
+                _pageState.Value = YUnity.PageState.OnPause;
             }
         }
 
@@ -69,7 +69,7 @@ namespace YUnity
             CanvasGroupY.blocksRaycasts = true;
             if (_pageState.Value != YUnity.PageState.OnResume)
             {
-                _pageState.OnNext(YUnity.PageState.OnResume);
+                _pageState.Value = YUnity.PageState.OnResume;
             }
         }
 
@@ -78,9 +78,8 @@ namespace YUnity
             CanvasGroupY.blocksRaycasts = false;
             if (_pageState.Value != YUnity.PageState.OnExit)
             {
-                _pageState.OnNext(YUnity.PageState.OnExit);
+                _pageState.Value = YUnity.PageState.OnExit;
             }
-            _pageState.OnCompleted();
             _pageState.Dispose();
             DestroyImmediate(gameObject);
         }

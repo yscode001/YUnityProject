@@ -10,12 +10,9 @@ namespace YUnity
         /// <summary>
         /// Pop指定数量的页面，即连续Pop几次
         /// </summary>
-        /// <param name="popCount"></param>
-        /// <param name="popReason"></param>
-        /// <param name="complete"></param>
         public void PopCount(int popCount, PopReason popReason, Action<bool> complete = null)
         {
-            if (Stack.Count == 0 || popCount <= 0 || IsPushingOrPoping)
+            if (_stack.Count == 0 || popCount <= 0 || IsPushingOrPoping)
             {
                 complete?.Invoke(false);
                 return;
@@ -23,20 +20,20 @@ namespace YUnity
             IsPushingOrPoping = true;
 
             // 1、计算需要pop掉的页面，并从栈中移除
-            int willPopTotalCount = Mathf.Min(popCount, Stack.Count);
+            int willPopTotalCount = Mathf.Min(popCount, _stack.Count);
             List<UIStackBaseWnd> willPopWnds = new List<UIStackBaseWnd>();
-            for (int i = Stack.Count - 1; i >= 0; i--)
+            for (int i = _stack.Count - 1; i >= 0; i--)
             {
                 if (willPopTotalCount <= willPopWnds.Count)
                 {
                     break;
                 }
-                willPopWnds.Add(Stack[i]);
-                Stack.RemoveAt(i);
+                willPopWnds.Add(_stack[i]);
+                _stack.RemoveAt(i);
             }
 
             // 2、整理页面可见性
-            VisibilityChange();
+            VisibilityChange_AfterStackChanged();
 
             // 3、退出页面
             foreach (var item in willPopWnds)
@@ -45,9 +42,9 @@ namespace YUnity
             }
 
             // 4、底下的页面恢复
-            if (Stack.Count > 0)
+            if (_stack.Count > 0)
             {
-                Stack.LastOrDefault().OnResume();
+                _stack.LastOrDefault().OnResume();
             }
 
             // 5、完成

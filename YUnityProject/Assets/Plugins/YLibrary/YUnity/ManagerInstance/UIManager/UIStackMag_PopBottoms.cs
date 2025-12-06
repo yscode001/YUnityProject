@@ -8,11 +8,9 @@ namespace YUnity
         /// <summary>
         /// Pop所有底下的页面，除了栈顶页面
         /// </summary>
-        /// <param name="popReason"></param>
-        /// <param name="complete"></param>
         public void PopBottoms(PopReason popReason, Action<bool> complete = null)
         {
-            if (Stack.Count <= 1 || IsPushingOrPoping)
+            if (_stack.Count <= 1 || IsPushingOrPoping)
             {
                 complete?.Invoke(false);
                 return;
@@ -21,14 +19,14 @@ namespace YUnity
 
             // 1、计算需要pop掉的页面，并从栈中移除
             List<UIStackBaseWnd> willPopWnds = new List<UIStackBaseWnd>();
-            for (int i = Stack.Count - 2; i >= 0; i--)
+            for (int i = _stack.Count - 2; i >= 0; i--)
             {
-                willPopWnds.Add(Stack[i]);
-                Stack.RemoveAt(i);
+                willPopWnds.Add(_stack[i]);
+                _stack.RemoveAt(i);
             }
 
             // 2、整理页面可见性
-            VisibilityChange();
+            VisibilityChange_AfterStackChanged();
 
             // 3、退出页面
             foreach (var item in willPopWnds)

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
@@ -6,16 +7,33 @@ namespace YUnity
 {
     public partial class UIStackMag
     {
+        private void DoAfterPushAniOver(UIStackBaseWnd wnd, PageType pageType, Action<bool> complete = null)
+        {
+            // 1.入栈
+            _stack.Add(wnd);
+            if (pageType == PageType.NewPage)
+            {
+                // 2.如果添加的是新页面，整理页面可见性
+                VisibilityChange_AfterStackChanged();
+            }
+            // 3.修改栈的完成状态
+            IsPushingOrPoping = false;
+            // 4.执行OnPush
+            wnd.OnPush();
+            // 5.回调结果
+            complete?.Invoke(true);
+        }
+
         public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, PushAni pushAni, Action<bool> complete = null)
         {
-            if (wnd == null || Contains(wnd) || IsPushingOrPoping)
+            if (wnd == null || _stack.Contains(wnd) || IsPushingOrPoping)
             {
                 complete?.Invoke(false);
                 return;
             }
             IsPushingOrPoping = true;
             // 先暂停底部页面
-            UIStackBaseWnd bottomWnd = GetTopWnd();
+            UIStackBaseWnd bottomWnd = _stack.LastOrDefault();
             if (bottomWnd != null)
             {
                 bottomWnd.OnPause();
@@ -26,31 +44,20 @@ namespace YUnity
             wnd.BeforePush();
             wnd.SetupPageTypeAndRunPushAni(pageType, pushAni, () =>
             {
-                // 新页面push动画完成
-                wnd.OnPush();
-                // 入栈
-                Stack.Add(wnd);
-                if (pageType == PageType.NewPage)
-                {
-                    // 如果添加的是新页面，整理页面可见性
-                    VisibilityChange();
-                }
-                // 完成
-                IsPushingOrPoping = false;
-                complete?.Invoke(true);
+                DoAfterPushAniOver(wnd, pageType, complete);
             });
         }
 
         public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, Sequence pushAni, Action<bool> complete = null)
         {
-            if (wnd == null || Contains(wnd) || IsPushingOrPoping)
+            if (wnd == null || _stack.Contains(wnd) || IsPushingOrPoping)
             {
                 complete?.Invoke(false);
                 return;
             }
             IsPushingOrPoping = true;
             // 先暂停底部页面
-            UIStackBaseWnd bottomWnd = GetTopWnd();
+            UIStackBaseWnd bottomWnd = _stack.LastOrDefault();
             if (bottomWnd != null)
             {
                 bottomWnd.OnPause();
@@ -63,35 +70,13 @@ namespace YUnity
             // 执行自定义push动画
             if (pushAni == null)
             {
-                // 新页面push动画完成
-                wnd.OnPush();
-                // 入栈
-                Stack.Add(wnd);
-                if (pageType == PageType.NewPage)
-                {
-                    // 如果添加的是新页面，整理页面可见性
-                    VisibilityChange();
-                }
-                // 完成
-                IsPushingOrPoping = false;
-                complete?.Invoke(true);
+                DoAfterPushAniOver(wnd, pageType, complete);
             }
             else
             {
                 pushAni.onComplete += () =>
                 {
-                    // 新页面push动画完成
-                    wnd.OnPush();
-                    // 入栈
-                    Stack.Add(wnd);
-                    if (pageType == PageType.NewPage)
-                    {
-                        // 如果添加的是新页面，整理页面可见性
-                        VisibilityChange();
-                    }
-                    // 完成
-                    IsPushingOrPoping = false;
-                    complete?.Invoke(true);
+                    DoAfterPushAniOver(wnd, pageType, complete);
                 };
             }
         }

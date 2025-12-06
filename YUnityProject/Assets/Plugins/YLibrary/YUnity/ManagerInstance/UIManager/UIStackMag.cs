@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
+using UniRx;
 
 namespace YUnity
 {
+    #region 单例
     public partial class UIStackMag : MonoBehaviourBaseY
     {
         private UIStackMag() { }
@@ -12,61 +12,34 @@ namespace YUnity
         {
             Instance = this;
         }
-
-        private List<UIStackBaseWnd> _stack;
-        private List<UIStackBaseWnd> Stack
-        {
-            get
-            {
-                _stack ??= new List<UIStackBaseWnd>();
-                return _stack;
-            }
-        }
     }
-    #region 对外提供属性和方法
+    #endregion
+    #region 定义属性
     public partial class UIStackMag
     {
+        private readonly ReactiveCollection<UIStackBaseWnd> _stack = new ReactiveCollection<UIStackBaseWnd>();
+        public IReadOnlyReactiveCollection<UIStackBaseWnd> Stack => _stack;
         public bool IsPushingOrPoping { get; private set; } = false;
-
-        public int GetWndCount() => Stack.Count;
-
-        public UIStackBaseWnd GetTopWnd() => Stack.LastOrDefault();
-
-        public bool Contains(UIStackBaseWnd wnd) => Stack.Contains(wnd);
-
-        public bool ContainsName(string wndName)
-        {
-            foreach (var item in Stack)
-            {
-                if (item.name == wndName)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
     }
     #endregion
     #region 工具方法，整理页面可见性
     public partial class UIStackMag
     {
-        internal void VisibilityChange()
+        internal void VisibilityChange_AfterStackChanged()
         {
-            bool topIsNewPage = false;
-            for (int i = Stack.Count - 1; i >= 0; i--)
+            bool topWndIsNewPage = false;
+            for (int i = _stack.Count - 1; i >= 0; i--)
             {
-                UIStackBaseWnd wnd = Stack[i];
-                if (topIsNewPage)
+                UIStackBaseWnd wnd = _stack[i];
+                if (topWndIsNewPage)
                 {
                     // 上面被新页面覆盖，本页面可隐藏
                     wnd.SetAct(false);
+                    continue;
                 }
-                else
-                {
-                    // 上面未被新页面覆盖，本页面显示
-                    wnd.SetAct(true);
-                    topIsNewPage = wnd.PageType == PageType.NewPage;
-                }
+                // 上面未被新页面覆盖，本页面显示
+                wnd.SetAct(true);
+                topWndIsNewPage = wnd.PageType == PageType.NewPage;
             }
         }
     }

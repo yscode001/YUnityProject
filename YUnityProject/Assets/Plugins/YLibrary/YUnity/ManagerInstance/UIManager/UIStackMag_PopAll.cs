@@ -7,22 +7,19 @@ namespace YUnity
         /// <summary>
         /// Pop所有页面
         /// </summary>
-        /// <param name="popReason"></param>
-        /// <param name="complete"></param>
         public void PopAll(PopReason popReason, Action<bool> complete = null)
         {
-            if (Stack.Count == 0 || IsPushingOrPoping)
+            if (_stack.Count == 0 || IsPushingOrPoping)
             {
                 complete?.Invoke(false);
                 return;
             }
             IsPushingOrPoping = true;
-
-            for (int i = Stack.Count - 1; i >= 0; i--)
+            for (int i = _stack.Count - 1; i >= 0; i--)
             {
-                Stack[i].OnExit(popReason);
+                _stack[i].OnExit(popReason);
             }
-
+            _stack.Clear();
             IsPushingOrPoping = false;
             complete?.Invoke(true);
         }
