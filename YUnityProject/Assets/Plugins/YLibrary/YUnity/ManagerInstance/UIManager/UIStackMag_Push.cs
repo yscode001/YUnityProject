@@ -7,6 +7,27 @@ namespace YUnity
 {
     public partial class UIStackMag
     {
+        private bool DoBeforePushAniStart(UIStackBaseWnd wnd, Transform parent, PageType pageType, Action<bool> complete = null)
+        {
+            if (wnd == null || _stack.Contains(wnd) || IsPushingOrPoping)
+            {
+                complete?.Invoke(false);
+                return true;
+            }
+            IsPushingOrPoping = true;
+            // 先暂停底部页面
+            UIStackBaseWnd bottomWnd = _stack.LastOrDefault();
+            if (bottomWnd != null)
+            {
+                bottomWnd.OnPause();
+            }
+            // 再添加新页面
+            wnd.RectTransformY.SetParent(parent, false);
+            wnd.SetupPageType(pageType);
+            wnd.SetAct(true);
+            wnd.BeforePush();
+            return false;
+        }
         private void DoAfterPushAniOver(UIStackBaseWnd wnd, PageType pageType, Action<bool> complete = null)
         {
             // 1.入栈
@@ -26,22 +47,10 @@ namespace YUnity
 
         public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, PushAni pushAni, Action<bool> complete = null)
         {
-            if (wnd == null || _stack.Contains(wnd) || IsPushingOrPoping)
+            if (DoBeforePushAniStart(wnd, parent, pageType, complete))
             {
-                complete?.Invoke(false);
                 return;
             }
-            IsPushingOrPoping = true;
-            // 先暂停底部页面
-            UIStackBaseWnd bottomWnd = _stack.LastOrDefault();
-            if (bottomWnd != null)
-            {
-                bottomWnd.OnPause();
-            }
-            // 再添加新页面
-            wnd.RectTransformY.SetParent(parent, false);
-            wnd.SetAct(true);
-            wnd.BeforePush();
             wnd.SetupPageTypeAndRunPushAni(pageType, pushAni, () =>
             {
                 DoAfterPushAniOver(wnd, pageType, complete);
@@ -50,24 +59,10 @@ namespace YUnity
 
         public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, Sequence pushAni, Action<bool> complete = null)
         {
-            if (wnd == null || _stack.Contains(wnd) || IsPushingOrPoping)
+            if (DoBeforePushAniStart(wnd, parent, pageType, complete))
             {
-                complete?.Invoke(false);
                 return;
             }
-            IsPushingOrPoping = true;
-            // 先暂停底部页面
-            UIStackBaseWnd bottomWnd = _stack.LastOrDefault();
-            if (bottomWnd != null)
-            {
-                bottomWnd.OnPause();
-            }
-            // 再添加新页面
-            wnd.RectTransformY.SetParent(parent, false);
-            wnd.SetupPageType(pageType);
-            wnd.SetAct(true);
-            wnd.BeforePush();
-            // 执行自定义push动画
             if (pushAni == null)
             {
                 DoAfterPushAniOver(wnd, pageType, complete);
