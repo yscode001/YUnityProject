@@ -10,17 +10,30 @@ namespace YUnity
     [RequireComponent(typeof(CanvasGroup))]
     public partial class UIStackBaseWnd : MonoBehaviourBaseY
     {
+        private Image _dialogWndMaskBGImg = null;
+        private bool _isInitedDialogWndMaskBGImg = false;
+
         /// <summary>
-        /// 遮罩背景，主要应用于弹框，新页面可以不设置
+        /// 遮罩背景，主要应用于弹框，新页面可以不设置，通常是自己的RectTransform上的Image
         /// </summary>
-        [Header("遮罩背景，主要应用于弹框，新页面可以不设置，通常是自己的RectTransform上的Image")]
-        [SerializeField] protected Image MaskBGImg;
+        protected Image DialogWndMaskBGImg
+        {
+            get
+            {
+                if (_dialogWndMaskBGImg == null && _isInitedDialogWndMaskBGImg == false)
+                {
+                    _isInitedDialogWndMaskBGImg = true;
+                    _dialogWndMaskBGImg = GetComponent<Image>();
+                }
+                return _dialogWndMaskBGImg;
+            }
+        }
 
         /// <summary>
         /// 页面内容的容器，做 Push 或 Pop 动画使用
         /// </summary>
         [Header("页面内容的容器，做 Push 或 Pop 动画使用")]
-        [SerializeField] protected RectTransform ContentContainerRT;
+        [SerializeField] protected RectTransform ContentBoxRT;
 
         /// <summary>
         /// 页面类型(新页面 or 新弹框)
@@ -116,43 +129,43 @@ namespace YUnity
             {
                 case PushAni.LeftToRight:
                     {
-                        Vector2 originalPos = ContentContainerRT.anchoredPosition;
-                        Vector2 fromPos = new Vector2(originalPos.x - ContentContainerRT.rect.width, originalPos.y);
-                        ContentContainerRT.anchoredPosition = fromPos;
-                        AniSequence.Append(ContentContainerRT.DOAnchorPos(originalPos, AniSeconds));
+                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                        Vector2 fromPos = new Vector2(originalPos.x - ContentBoxRT.rect.width, originalPos.y);
+                        ContentBoxRT.anchoredPosition = fromPos;
+                        AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
                         break;
                     }
                 case PushAni.RightToLeft:
                     {
-                        Vector2 originalPos = ContentContainerRT.anchoredPosition;
-                        Vector2 fromPos = new Vector2(originalPos.x + ContentContainerRT.rect.width, originalPos.y);
-                        ContentContainerRT.anchoredPosition = fromPos;
-                        AniSequence.Append(ContentContainerRT.DOAnchorPos(originalPos, AniSeconds));
+                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                        Vector2 fromPos = new Vector2(originalPos.x + ContentBoxRT.rect.width, originalPos.y);
+                        ContentBoxRT.anchoredPosition = fromPos;
+                        AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
                         break;
                     }
                 case PushAni.BottomToTop:
                     {
-                        Vector2 originalPos = ContentContainerRT.anchoredPosition;
-                        Vector2 fromPos = new Vector2(originalPos.x, originalPos.y - ContentContainerRT.rect.height);
-                        ContentContainerRT.anchoredPosition = fromPos;
-                        AniSequence.Append(ContentContainerRT.DOAnchorPos(originalPos, AniSeconds));
+                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                        Vector2 fromPos = new Vector2(originalPos.x, originalPos.y - ContentBoxRT.rect.height);
+                        ContentBoxRT.anchoredPosition = fromPos;
+                        AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
                         break;
                     }
                 case PushAni.TopToBottom:
                     {
-                        Vector2 originalPos = ContentContainerRT.anchoredPosition;
-                        Vector2 fromPos = new Vector2(originalPos.x, originalPos.y + ContentContainerRT.rect.height);
-                        ContentContainerRT.anchoredPosition = fromPos;
-                        AniSequence.Append(ContentContainerRT.DOAnchorPos(originalPos, AniSeconds));
+                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                        Vector2 fromPos = new Vector2(originalPos.x, originalPos.y + ContentBoxRT.rect.height);
+                        ContentBoxRT.anchoredPosition = fromPos;
+                        AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
                         break;
                     }
                 case PushAni.ScaleSmallToBig:
-                    ContentContainerRT.localScale = ScaleSmallValue;
-                    AniSequence.Append(ContentContainerRT.DOScale(Vector3.one, AniSeconds));
+                    ContentBoxRT.localScale = ScaleSmallValue;
+                    AniSequence.Append(ContentBoxRT.DOScale(Vector3.one, AniSeconds));
                     break;
                 case PushAni.ScaleBigToSmall:
-                    ContentContainerRT.localScale = ScaleBigValue;
-                    AniSequence.Append(ContentContainerRT.DOScale(Vector3.one, AniSeconds));
+                    ContentBoxRT.localScale = ScaleBigValue;
+                    AniSequence.Append(ContentBoxRT.DOScale(Vector3.one, AniSeconds));
                     break;
                 case PushAni.FadeIn:
                     CanvasGroupY.alpha = 0;
@@ -161,10 +174,10 @@ namespace YUnity
                 default:
                     break;
             }
-            if (pushAni != PushAni.None && PageType == PageType.Dialog && MaskBGImg != null)
+            if (pushAni != PushAni.None && PageType == PageType.Dialog && DialogWndMaskBGImg != null)
             {
-                MaskBGImg.color = MaskColorTouMing;
-                AniSequence.Join(MaskBGImg.DOColor(MaskColorShown, AniSeconds));
+                DialogWndMaskBGImg.color = MaskColorTouMing;
+                AniSequence.Join(DialogWndMaskBGImg.DOColor(MaskColorShown, AniSeconds));
             }
             AniSequence.OnComplete(complete);
         }
@@ -175,39 +188,39 @@ namespace YUnity
             {
                 case PopAni.LeftToRight:
                     {
-                        Vector2 originalPos = ContentContainerRT.anchoredPosition;
-                        Vector2 toPos = new Vector2(originalPos.x + ContentContainerRT.rect.width, originalPos.y);
-                        AniSequence.Append(ContentContainerRT.DOAnchorPos(toPos, AniSeconds));
+                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                        Vector2 toPos = new Vector2(originalPos.x + ContentBoxRT.rect.width, originalPos.y);
+                        AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
                         break;
                     }
                 case PopAni.RightToLeft:
                     {
-                        Vector2 originalPos = ContentContainerRT.anchoredPosition;
-                        Vector2 toPos = new Vector2(originalPos.x - ContentContainerRT.rect.width, originalPos.y);
-                        AniSequence.Append(ContentContainerRT.DOAnchorPos(toPos, AniSeconds));
+                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                        Vector2 toPos = new Vector2(originalPos.x - ContentBoxRT.rect.width, originalPos.y);
+                        AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
                         break;
                     }
                 case PopAni.BottomToTop:
                     {
-                        Vector2 originalPos = ContentContainerRT.anchoredPosition;
-                        Vector2 toPos = new Vector2(originalPos.x, originalPos.y + ContentContainerRT.rect.height);
-                        AniSequence.Append(ContentContainerRT.DOAnchorPos(toPos, AniSeconds));
+                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                        Vector2 toPos = new Vector2(originalPos.x, originalPos.y + ContentBoxRT.rect.height);
+                        AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
                         break;
                     }
                 case PopAni.TopToBottom:
                     {
-                        Vector2 originalPos = ContentContainerRT.anchoredPosition;
-                        Vector2 toPos = new Vector2(originalPos.x, originalPos.y - ContentContainerRT.rect.height);
-                        AniSequence.Append(ContentContainerRT.DOAnchorPos(toPos, AniSeconds));
+                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                        Vector2 toPos = new Vector2(originalPos.x, originalPos.y - ContentBoxRT.rect.height);
+                        AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
                         break;
                     }
                 case PopAni.ScaleSmallToBig:
-                    ContentContainerRT.localScale = Vector3.one;
-                    AniSequence.Append(ContentContainerRT.DOScale(ScaleBigValue, AniSeconds));
+                    ContentBoxRT.localScale = Vector3.one;
+                    AniSequence.Append(ContentBoxRT.DOScale(ScaleBigValue, AniSeconds));
                     break;
                 case PopAni.ScaleBigToSmall:
-                    ContentContainerRT.localScale = Vector3.one;
-                    AniSequence.Append(ContentContainerRT.DOScale(ScaleSmallValue, AniSeconds));
+                    ContentBoxRT.localScale = Vector3.one;
+                    AniSequence.Append(ContentBoxRT.DOScale(ScaleSmallValue, AniSeconds));
                     break;
                 case PopAni.FadeOut:
                     CanvasGroupY.alpha = 1;
@@ -216,10 +229,10 @@ namespace YUnity
                 default:
                     break;
             }
-            if (popAni != PopAni.None && PageType == PageType.Dialog && MaskBGImg != null)
+            if (popAni != PopAni.None && PageType == PageType.Dialog && DialogWndMaskBGImg != null)
             {
-                MaskBGImg.color = MaskColorShown;
-                AniSequence.Join(MaskBGImg.DOColor(MaskColorTouMing, AniSeconds));
+                DialogWndMaskBGImg.color = MaskColorShown;
+                AniSequence.Join(DialogWndMaskBGImg.DOColor(MaskColorTouMing, AniSeconds));
             }
             AniSequence.OnComplete(complete);
         }

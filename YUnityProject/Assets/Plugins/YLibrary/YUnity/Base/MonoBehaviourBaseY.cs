@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Playables;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 namespace YUnity
@@ -27,6 +28,8 @@ namespace YUnity
         private Rigidbody2D _rigidbod2Dy;
         private Canvas _canvas;
         private CanvasGroup _canvasGroup;
+        private Text _text;
+        private Image _image;
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
         private Renderer _renderer;
@@ -281,6 +284,36 @@ namespace YUnity
                 if (_canvasGroup != null) { return _canvasGroup; }
                 _canvasGroup = gameObject.AddComponent<CanvasGroup>();
                 return _canvasGroup;
+            }
+        }
+
+        /// <summary>
+        /// 获取Text(UI专用)，如果没有则添加
+        /// </summary>
+        public Text TextY
+        {
+            get
+            {
+                if (_text != null) { return _text; }
+                _text = gameObject.GetComponent<Text>();
+                if (_text != null) { return _text; }
+                _text = gameObject.AddComponent<Text>();
+                return _text;
+            }
+        }
+
+        /// <summary>
+        /// 获取Image(UI专用)，如果没有则添加
+        /// </summary>
+        public Image ImageY
+        {
+            get
+            {
+                if (_image != null) { return _image; }
+                _image = gameObject.GetComponent<Image>();
+                if (_image != null) { return _image; }
+                _image = gameObject.AddComponent<Image>();
+                return _image;
             }
         }
 
