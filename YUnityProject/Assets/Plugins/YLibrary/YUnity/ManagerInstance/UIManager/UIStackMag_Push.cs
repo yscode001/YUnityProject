@@ -9,7 +9,10 @@ namespace YUnity
     {
         private bool DoBeforePushAniStart(UIStackBaseWnd wnd, Transform parent, PageType pageType, Action<bool> complete = null)
         {
-            if (wnd == null || _stack.Contains(wnd) || IsPushingOrPoping)
+            if (wnd == null ||
+                _stack.Contains(wnd) ||
+                (_stack.Count > 0 && _stack.LastOrDefault().name == wnd.name) ||
+                IsPushingOrPoping)
             {
                 complete?.Invoke(false);
                 return true;
