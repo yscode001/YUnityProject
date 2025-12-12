@@ -1,3 +1,4 @@
+using System.Linq;
 using UniRx;
 
 namespace YUnity
@@ -14,12 +15,16 @@ namespace YUnity
         }
     }
     #endregion
-    #region 定义属性
+    #region 定义外界可使用的属性和方法
     public partial class UIStackMag
     {
         private readonly ReactiveCollection<UIStackBaseWnd> _stack = new ReactiveCollection<UIStackBaseWnd>();
         public IReadOnlyReactiveCollection<UIStackBaseWnd> Stack => _stack;
         public bool IsPushingOrPoping { get; private set; } = false;
+
+        public UIStackBaseWnd GetTopWnd() => _stack.LastOrDefault();
+        public bool ContainsWnd(UIStackBaseWnd wnd) => _stack.Contains(wnd);
+        public bool ContainsWnd(string wndName) => _stack.FirstOrDefault(m => m.name == wndName) != null;
     }
     #endregion
     #region 工具方法，整理页面可见性
