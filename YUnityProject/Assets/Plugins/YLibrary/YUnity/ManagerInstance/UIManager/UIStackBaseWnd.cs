@@ -40,12 +40,12 @@ namespace YUnity
         /// </summary>
         public PageType PageType { get; private set; } = PageType.NewPage;
 
-        private readonly ReactiveProperty<PageState> _pageState = new ReactiveProperty<PageState>(YUnity.PageState.UnKnown);
+        private readonly ReactiveProperty<PageStateType> _pageState = new ReactiveProperty<PageStateType>(YUnity.PageStateType.UnKnown);
 
         /// <summary>
         /// 页面状态
         /// </summary>
-        public IReadOnlyReactiveProperty<PageState> PageState => _pageState.ToReadOnlyReactiveProperty();
+        public IReadOnlyReactiveProperty<PageStateType> PageState => _pageState.ToReadOnlyReactiveProperty();
     }
     #endregion
     #region 自定义生命周期函数
@@ -53,45 +53,45 @@ namespace YUnity
     {
         public virtual void BeforePush()
         {
-            if (_pageState.Value != YUnity.PageState.BeforePush)
+            if (_pageState.Value != YUnity.PageStateType.BeforePush)
             {
-                _pageState.Value = YUnity.PageState.BeforePush;
+                _pageState.Value = YUnity.PageStateType.BeforePush;
             }
         }
         public virtual void OnPush()
         {
             CanvasGroupY.alpha = 1;
             CanvasGroupY.blocksRaycasts = true;
-            if (_pageState.Value != YUnity.PageState.OnPush)
+            if (_pageState.Value != YUnity.PageStateType.OnPush)
             {
-                _pageState.Value = YUnity.PageState.OnPush;
+                _pageState.Value = YUnity.PageStateType.OnPush;
             }
         }
 
         public virtual void OnPause()
         {
             CanvasGroupY.blocksRaycasts = false;
-            if (_pageState.Value != YUnity.PageState.OnPause)
+            if (_pageState.Value != YUnity.PageStateType.OnPause)
             {
-                _pageState.Value = YUnity.PageState.OnPause;
+                _pageState.Value = YUnity.PageStateType.OnPause;
             }
         }
 
         public virtual void OnResume()
         {
             CanvasGroupY.blocksRaycasts = true;
-            if (_pageState.Value != YUnity.PageState.OnResume)
+            if (_pageState.Value != YUnity.PageStateType.OnResume)
             {
-                _pageState.Value = YUnity.PageState.OnResume;
+                _pageState.Value = YUnity.PageStateType.OnResume;
             }
         }
 
         public virtual void OnExit(PopReason popReason)
         {
             CanvasGroupY.blocksRaycasts = false;
-            if (_pageState.Value != YUnity.PageState.OnExit)
+            if (_pageState.Value != YUnity.PageStateType.OnExit)
             {
-                _pageState.Value = YUnity.PageState.OnExit;
+                _pageState.Value = YUnity.PageStateType.OnExit;
             }
             _pageState.Dispose();
             DestroyImmediate(gameObject);
