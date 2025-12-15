@@ -129,43 +129,61 @@ namespace YUnity
             {
                 case PushAni.LeftToRight:
                     {
-                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                        Vector2 fromPos = new Vector2(originalPos.x - ContentBoxRT.rect.width, originalPos.y);
-                        ContentBoxRT.anchoredPosition = fromPos;
-                        AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
+                        if (ContentBoxRT != null)
+                        {
+                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                            Vector2 fromPos = new Vector2(originalPos.x - ContentBoxRT.rect.width, originalPos.y);
+                            ContentBoxRT.anchoredPosition = fromPos;
+                            AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
+                        }
                         break;
                     }
                 case PushAni.RightToLeft:
                     {
-                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                        Vector2 fromPos = new Vector2(originalPos.x + ContentBoxRT.rect.width, originalPos.y);
-                        ContentBoxRT.anchoredPosition = fromPos;
-                        AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
+                        if (ContentBoxRT != null)
+                        {
+                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                            Vector2 fromPos = new Vector2(originalPos.x + ContentBoxRT.rect.width, originalPos.y);
+                            ContentBoxRT.anchoredPosition = fromPos;
+                            AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
+                        }
                         break;
                     }
                 case PushAni.BottomToTop:
                     {
-                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                        Vector2 fromPos = new Vector2(originalPos.x, originalPos.y - ContentBoxRT.rect.height);
-                        ContentBoxRT.anchoredPosition = fromPos;
-                        AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
+                        if (ContentBoxRT != null)
+                        {
+                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                            Vector2 fromPos = new Vector2(originalPos.x, originalPos.y - ContentBoxRT.rect.height);
+                            ContentBoxRT.anchoredPosition = fromPos;
+                            AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
+                        }
                         break;
                     }
                 case PushAni.TopToBottom:
                     {
-                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                        Vector2 fromPos = new Vector2(originalPos.x, originalPos.y + ContentBoxRT.rect.height);
-                        ContentBoxRT.anchoredPosition = fromPos;
-                        AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
+                        if (ContentBoxRT != null)
+                        {
+                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                            Vector2 fromPos = new Vector2(originalPos.x, originalPos.y + ContentBoxRT.rect.height);
+                            ContentBoxRT.anchoredPosition = fromPos;
+                            AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
+                        }
                         break;
                     }
                 case PushAni.ScaleSmallToBig:
-                    ContentBoxRT.localScale = ScaleSmallValue;
-                    AniSequence.Append(ContentBoxRT.DOScale(Vector3.one, AniSeconds));
+                    if (ContentBoxRT != null)
+                    {
+                        ContentBoxRT.localScale = ScaleSmallValue;
+                        AniSequence.Append(ContentBoxRT.DOScale(Vector3.one, AniSeconds));
+                    }
                     break;
                 case PushAni.ScaleBigToSmall:
-                    ContentBoxRT.localScale = ScaleBigValue;
-                    AniSequence.Append(ContentBoxRT.DOScale(Vector3.one, AniSeconds));
+                    if (ContentBoxRT != null)
+                    {
+                        ContentBoxRT.localScale = ScaleBigValue;
+                        AniSequence.Append(ContentBoxRT.DOScale(Vector3.one, AniSeconds));
+                    }
                     break;
                 case PushAni.FadeIn:
                     CanvasGroupY.alpha = 0;
@@ -188,39 +206,57 @@ namespace YUnity
             {
                 case PopAni.LeftToRight:
                     {
-                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                        Vector2 toPos = new Vector2(originalPos.x + ContentBoxRT.rect.width, originalPos.y);
-                        AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
+                        if (ContentBoxRT != null)
+                        {
+                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                            Vector2 toPos = new Vector2(originalPos.x + ContentBoxRT.rect.width, originalPos.y);
+                            AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
+                        }
                         break;
                     }
                 case PopAni.RightToLeft:
                     {
-                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                        Vector2 toPos = new Vector2(originalPos.x - ContentBoxRT.rect.width, originalPos.y);
-                        AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
+                        if (ContentBoxRT != null)
+                        {
+                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                            Vector2 toPos = new Vector2(originalPos.x - ContentBoxRT.rect.width, originalPos.y);
+                            AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
+                        }
                         break;
                     }
                 case PopAni.BottomToTop:
                     {
-                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                        Vector2 toPos = new Vector2(originalPos.x, originalPos.y + ContentBoxRT.rect.height);
-                        AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
+                        if (ContentBoxRT != null)
+                        {
+                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                            Vector2 toPos = new Vector2(originalPos.x, originalPos.y + ContentBoxRT.rect.height);
+                            AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
+                        }
                         break;
                     }
                 case PopAni.TopToBottom:
                     {
-                        Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                        Vector2 toPos = new Vector2(originalPos.x, originalPos.y - ContentBoxRT.rect.height);
-                        AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
+                        if (ContentBoxRT != null)
+                        {
+                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                            Vector2 toPos = new Vector2(originalPos.x, originalPos.y - ContentBoxRT.rect.height);
+                            AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
+                        }
                         break;
                     }
                 case PopAni.ScaleSmallToBig:
-                    ContentBoxRT.localScale = Vector3.one;
-                    AniSequence.Append(ContentBoxRT.DOScale(ScaleBigValue, AniSeconds));
+                    if (ContentBoxRT != null)
+                    {
+                        ContentBoxRT.localScale = Vector3.one;
+                        AniSequence.Append(ContentBoxRT.DOScale(ScaleBigValue, AniSeconds));
+                    }
                     break;
                 case PopAni.ScaleBigToSmall:
-                    ContentBoxRT.localScale = Vector3.one;
-                    AniSequence.Append(ContentBoxRT.DOScale(ScaleSmallValue, AniSeconds));
+                    if (ContentBoxRT != null)
+                    {
+                        ContentBoxRT.localScale = Vector3.one;
+                        AniSequence.Append(ContentBoxRT.DOScale(ScaleSmallValue, AniSeconds));
+                    }
                     break;
                 case PopAni.FadeOut:
                     CanvasGroupY.alpha = 1;
