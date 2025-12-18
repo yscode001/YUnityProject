@@ -53,6 +53,7 @@ namespace YUnity
     {
         public virtual void BeforePush()
         {
+            CanvasGroupY.blocksRaycasts = false;
             if (_pageState.Value != YUnity.PageStateType.BeforePush)
             {
                 _pageState.Value = YUnity.PageStateType.BeforePush;
