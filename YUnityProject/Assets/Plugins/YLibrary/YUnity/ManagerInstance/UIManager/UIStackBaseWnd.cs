@@ -54,45 +54,54 @@ namespace YUnity
         public virtual void BeforePush()
         {
             CanvasGroupY.blocksRaycasts = false;
-            if (_pageState.Value != YUnity.PageStateType.BeforePush)
+            if (_pageState.Value != PageStateType.BeforePush)
             {
-                _pageState.Value = YUnity.PageStateType.BeforePush;
+                _pageState.Value = PageStateType.BeforePush;
             }
         }
         public virtual void OnPush()
         {
             CanvasGroupY.alpha = 1;
             CanvasGroupY.blocksRaycasts = true;
-            if (_pageState.Value != YUnity.PageStateType.OnPush)
+            if (_pageState.Value != PageStateType.OnPush)
             {
-                _pageState.Value = YUnity.PageStateType.OnPush;
+                _pageState.Value = PageStateType.OnPush;
             }
         }
 
         public virtual void OnPause()
         {
             CanvasGroupY.blocksRaycasts = false;
-            if (_pageState.Value != YUnity.PageStateType.OnPause)
+            if (_pageState.Value != PageStateType.OnPause)
             {
-                _pageState.Value = YUnity.PageStateType.OnPause;
+                _pageState.Value = PageStateType.OnPause;
             }
         }
 
         public virtual void OnResume()
         {
             CanvasGroupY.blocksRaycasts = true;
-            if (_pageState.Value != YUnity.PageStateType.OnResume)
+            if (_pageState.Value != PageStateType.OnResume)
             {
-                _pageState.Value = YUnity.PageStateType.OnResume;
+                _pageState.Value = PageStateType.OnResume;
+            }
+        }
+
+        public virtual void WillExit(PopReason popReason)
+        {
+            CanvasGroupY.blocksRaycasts = false;
+            if (_pageState.Value != PageStateType.WillExit)
+            {
+                _pageState.Value = PageStateType.WillExit;
             }
         }
 
         public virtual void OnExit(PopReason popReason)
         {
             CanvasGroupY.blocksRaycasts = false;
-            if (_pageState.Value != YUnity.PageStateType.OnExit)
+            if (_pageState.Value != PageStateType.OnExit)
             {
-                _pageState.Value = YUnity.PageStateType.OnExit;
+                _pageState.Value = PageStateType.OnExit;
             }
             _pageState.Dispose();
             DestroyImmediate(gameObject);

@@ -35,6 +35,7 @@ namespace YUnity
 
             // 1、计算需要pop掉的页面，并从栈中移除
             UIStackBaseWnd willPopWnd = _stack.LastOrDefault();
+            willPopWnd.WillExit(popReason);
             _stack.Remove(willPopWnd);
 
             // 2、整理页面可见性
@@ -64,6 +65,7 @@ namespace YUnity
 
             // 1、计算需要pop掉的页面，并从栈中移除
             UIStackBaseWnd willPopWnd = _stack.LastOrDefault();
+            willPopWnd.WillExit(popReason);
             _stack.Remove(willPopWnd);
 
             // 2、整理页面可见性

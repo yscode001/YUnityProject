@@ -31,6 +31,7 @@ namespace YUnity
             // 3、退出页面
             foreach (var item in willPopWnds)
             {
+                item.WillExit(popReason);
                 item.OnExit(popReason);
             }
 

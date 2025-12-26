@@ -31,6 +31,7 @@ namespace YUnity
                 VisibilityChange_AfterStackChanged();
 
                 // 3、页面退出
+                wnd.WillExit(popReason);
                 wnd.OnExit(popReason);
 
                 // 4、完成

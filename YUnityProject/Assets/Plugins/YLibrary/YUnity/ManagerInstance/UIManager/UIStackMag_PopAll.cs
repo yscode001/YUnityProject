@@ -17,6 +17,7 @@ namespace YUnity
             IsPushingOrPoping = true;
             for (int i = _stack.Count - 1; i >= 0; i--)
             {
+                _stack[i].WillExit(popReason);
                 _stack[i].OnExit(popReason);
             }
             _stack.Clear();

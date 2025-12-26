@@ -23,6 +23,7 @@ namespace YUnity
         OnPush,
         OnPause,
         OnResume,
+        WillExit,
         OnExit,
         UnKnown,
     }
