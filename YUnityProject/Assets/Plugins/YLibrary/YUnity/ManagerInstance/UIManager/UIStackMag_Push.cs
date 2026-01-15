@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using DG.Tweening;
 using UnityEngine;
 
 namespace YUnity
@@ -58,25 +57,6 @@ namespace YUnity
             {
                 DoAfterPushAniOver(wnd, pageType, complete);
             });
-        }
-
-        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, Sequence pushAni, Action<bool> complete = null)
-        {
-            if (DoBeforePushAniStart(wnd, parent, pageType, complete))
-            {
-                return;
-            }
-            if (pushAni == null)
-            {
-                DoAfterPushAniOver(wnd, pageType, complete);
-            }
-            else
-            {
-                pushAni.onComplete += () =>
-                {
-                    DoAfterPushAniOver(wnd, pageType, complete);
-                };
-            }
         }
     }
 }

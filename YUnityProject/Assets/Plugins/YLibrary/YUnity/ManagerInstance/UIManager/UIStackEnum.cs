@@ -58,6 +58,7 @@ namespace YUnity
         ScaleSmallToBig,
         ScaleBigToSmall,
         FadeIn,
+        Custom,
     }
 
     /// <summary>
@@ -73,5 +74,6 @@ namespace YUnity
         ScaleSmallToBig,
         ScaleBigToSmall,
         FadeOut,
+        Custom,
     }
 }

@@ -118,7 +118,7 @@ namespace YUnity
         private const float AniSeconds = 0.2f;
 
         private Sequence AniSequence;
-        private void CreateAniSequence()
+        private void ReCreateAniSequence()
         {
             if (AniSequence != null)
             {
@@ -134,153 +134,190 @@ namespace YUnity
         internal void SetupPageTypeAndRunPushAni(PageType pageType, PushAni pushAni, TweenCallback complete)
         {
             PageType = pageType;
-            CreateAniSequence();
-            switch (pushAni)
+            if (pushAni == PushAni.Custom)
             {
-                case PushAni.LeftToRight:
-                    {
-                        if (ContentBoxRT != null)
-                        {
-                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                            Vector2 fromPos = new Vector2(originalPos.x - ContentBoxRT.rect.width, originalPos.y);
-                            ContentBoxRT.anchoredPosition = fromPos;
-                            AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
-                        }
-                        break;
-                    }
-                case PushAni.RightToLeft:
-                    {
-                        if (ContentBoxRT != null)
-                        {
-                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                            Vector2 fromPos = new Vector2(originalPos.x + ContentBoxRT.rect.width, originalPos.y);
-                            ContentBoxRT.anchoredPosition = fromPos;
-                            AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
-                        }
-                        break;
-                    }
-                case PushAni.BottomToTop:
-                    {
-                        if (ContentBoxRT != null)
-                        {
-                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                            Vector2 fromPos = new Vector2(originalPos.x, originalPos.y - ContentBoxRT.rect.height);
-                            ContentBoxRT.anchoredPosition = fromPos;
-                            AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
-                        }
-                        break;
-                    }
-                case PushAni.TopToBottom:
-                    {
-                        if (ContentBoxRT != null)
-                        {
-                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                            Vector2 fromPos = new Vector2(originalPos.x, originalPos.y + ContentBoxRT.rect.height);
-                            ContentBoxRT.anchoredPosition = fromPos;
-                            AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
-                        }
-                        break;
-                    }
-                case PushAni.ScaleSmallToBig:
-                    if (ContentBoxRT != null)
-                    {
-                        ContentBoxRT.localScale = ScaleSmallValue;
-                        AniSequence.Append(ContentBoxRT.DOScale(Vector3.one, AniSeconds));
-                    }
-                    break;
-                case PushAni.ScaleBigToSmall:
-                    if (ContentBoxRT != null)
-                    {
-                        ContentBoxRT.localScale = ScaleBigValue;
-                        AniSequence.Append(ContentBoxRT.DOScale(Vector3.one, AniSeconds));
-                    }
-                    break;
-                case PushAni.FadeIn:
-                    CanvasGroupY.alpha = 0;
-                    AniSequence.Append(CanvasGroupY.DOFade(1, AniSeconds));
-                    break;
-                default:
-                    break;
+                AniSequence = CreateCustomPushAniSequence();
+                if (AniSequence == null)
+                {
+                    AniSequence = DOTween.Sequence();
+                }
+                AniSequence.OnComplete(complete);
             }
-            if (pushAni != PushAni.None && PageType == PageType.Dialog && DialogWndMaskBGImg != null)
+            else
             {
-                DialogWndMaskBGImg.color = MaskColorTouMing;
-                AniSequence.Join(DialogWndMaskBGImg.DOColor(MaskColorShown, AniSeconds));
+                ReCreateAniSequence();
+                switch (pushAni)
+                {
+                    case PushAni.LeftToRight:
+                        {
+                            if (ContentBoxRT != null)
+                            {
+                                Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                                Vector2 fromPos = new Vector2(originalPos.x - ContentBoxRT.rect.width, originalPos.y);
+                                ContentBoxRT.anchoredPosition = fromPos;
+                                AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
+                            }
+                            break;
+                        }
+                    case PushAni.RightToLeft:
+                        {
+                            if (ContentBoxRT != null)
+                            {
+                                Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                                Vector2 fromPos = new Vector2(originalPos.x + ContentBoxRT.rect.width, originalPos.y);
+                                ContentBoxRT.anchoredPosition = fromPos;
+                                AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
+                            }
+                            break;
+                        }
+                    case PushAni.BottomToTop:
+                        {
+                            if (ContentBoxRT != null)
+                            {
+                                Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                                Vector2 fromPos = new Vector2(originalPos.x, originalPos.y - ContentBoxRT.rect.height);
+                                ContentBoxRT.anchoredPosition = fromPos;
+                                AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
+                            }
+                            break;
+                        }
+                    case PushAni.TopToBottom:
+                        {
+                            if (ContentBoxRT != null)
+                            {
+                                Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                                Vector2 fromPos = new Vector2(originalPos.x, originalPos.y + ContentBoxRT.rect.height);
+                                ContentBoxRT.anchoredPosition = fromPos;
+                                AniSequence.Append(ContentBoxRT.DOAnchorPos(originalPos, AniSeconds));
+                            }
+                            break;
+                        }
+                    case PushAni.ScaleSmallToBig:
+                        if (ContentBoxRT != null)
+                        {
+                            ContentBoxRT.localScale = ScaleSmallValue;
+                            AniSequence.Append(ContentBoxRT.DOScale(Vector3.one, AniSeconds));
+                        }
+                        break;
+                    case PushAni.ScaleBigToSmall:
+                        if (ContentBoxRT != null)
+                        {
+                            ContentBoxRT.localScale = ScaleBigValue;
+                            AniSequence.Append(ContentBoxRT.DOScale(Vector3.one, AniSeconds));
+                        }
+                        break;
+                    case PushAni.FadeIn:
+                        CanvasGroupY.alpha = 0;
+                        AniSequence.Append(CanvasGroupY.DOFade(1, AniSeconds));
+                        break;
+                    default:
+                        break;
+                }
+                if (pushAni != PushAni.None && PageType == PageType.Dialog && DialogWndMaskBGImg != null)
+                {
+                    DialogWndMaskBGImg.color = MaskColorTouMing;
+                    AniSequence.Join(DialogWndMaskBGImg.DOColor(MaskColorShown, AniSeconds));
+                }
+                AniSequence.OnComplete(complete);
             }
-            AniSequence.OnComplete(complete);
         }
         internal void RunPopAni(PopAni popAni, TweenCallback complete)
         {
-            CreateAniSequence();
-            switch (popAni)
+            if (popAni == PopAni.Custom)
             {
-                case PopAni.LeftToRight:
-                    {
-                        if (ContentBoxRT != null)
-                        {
-                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                            Vector2 toPos = new Vector2(originalPos.x + ContentBoxRT.rect.width, originalPos.y);
-                            AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
-                        }
-                        break;
-                    }
-                case PopAni.RightToLeft:
-                    {
-                        if (ContentBoxRT != null)
-                        {
-                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                            Vector2 toPos = new Vector2(originalPos.x - ContentBoxRT.rect.width, originalPos.y);
-                            AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
-                        }
-                        break;
-                    }
-                case PopAni.BottomToTop:
-                    {
-                        if (ContentBoxRT != null)
-                        {
-                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                            Vector2 toPos = new Vector2(originalPos.x, originalPos.y + ContentBoxRT.rect.height);
-                            AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
-                        }
-                        break;
-                    }
-                case PopAni.TopToBottom:
-                    {
-                        if (ContentBoxRT != null)
-                        {
-                            Vector2 originalPos = ContentBoxRT.anchoredPosition;
-                            Vector2 toPos = new Vector2(originalPos.x, originalPos.y - ContentBoxRT.rect.height);
-                            AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
-                        }
-                        break;
-                    }
-                case PopAni.ScaleSmallToBig:
-                    if (ContentBoxRT != null)
-                    {
-                        ContentBoxRT.localScale = Vector3.one;
-                        AniSequence.Append(ContentBoxRT.DOScale(ScaleBigValue, AniSeconds));
-                    }
-                    break;
-                case PopAni.ScaleBigToSmall:
-                    if (ContentBoxRT != null)
-                    {
-                        ContentBoxRT.localScale = Vector3.one;
-                        AniSequence.Append(ContentBoxRT.DOScale(ScaleSmallValue, AniSeconds));
-                    }
-                    break;
-                case PopAni.FadeOut:
-                    CanvasGroupY.alpha = 1;
-                    AniSequence.Append(CanvasGroupY.DOFade(0, AniSeconds));
-                    break;
-                default:
-                    break;
+                AniSequence = CreateCustomPopAniSequence();
+                if (AniSequence == null)
+                {
+                    AniSequence = DOTween.Sequence();
+                }
+                AniSequence.OnComplete(complete);
             }
-            if (popAni != PopAni.None && PageType == PageType.Dialog && DialogWndMaskBGImg != null)
+            else
             {
-                DialogWndMaskBGImg.color = MaskColorShown;
-                AniSequence.Join(DialogWndMaskBGImg.DOColor(MaskColorTouMing, AniSeconds));
+                ReCreateAniSequence();
+                switch (popAni)
+                {
+                    case PopAni.LeftToRight:
+                        {
+                            if (ContentBoxRT != null)
+                            {
+                                Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                                Vector2 toPos = new Vector2(originalPos.x + ContentBoxRT.rect.width, originalPos.y);
+                                AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
+                            }
+                            break;
+                        }
+                    case PopAni.RightToLeft:
+                        {
+                            if (ContentBoxRT != null)
+                            {
+                                Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                                Vector2 toPos = new Vector2(originalPos.x - ContentBoxRT.rect.width, originalPos.y);
+                                AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
+                            }
+                            break;
+                        }
+                    case PopAni.BottomToTop:
+                        {
+                            if (ContentBoxRT != null)
+                            {
+                                Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                                Vector2 toPos = new Vector2(originalPos.x, originalPos.y + ContentBoxRT.rect.height);
+                                AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
+                            }
+                            break;
+                        }
+                    case PopAni.TopToBottom:
+                        {
+                            if (ContentBoxRT != null)
+                            {
+                                Vector2 originalPos = ContentBoxRT.anchoredPosition;
+                                Vector2 toPos = new Vector2(originalPos.x, originalPos.y - ContentBoxRT.rect.height);
+                                AniSequence.Append(ContentBoxRT.DOAnchorPos(toPos, AniSeconds));
+                            }
+                            break;
+                        }
+                    case PopAni.ScaleSmallToBig:
+                        if (ContentBoxRT != null)
+                        {
+                            ContentBoxRT.localScale = Vector3.one;
+                            AniSequence.Append(ContentBoxRT.DOScale(ScaleBigValue, AniSeconds));
+                        }
+                        break;
+                    case PopAni.ScaleBigToSmall:
+                        if (ContentBoxRT != null)
+                        {
+                            ContentBoxRT.localScale = Vector3.one;
+                            AniSequence.Append(ContentBoxRT.DOScale(ScaleSmallValue, AniSeconds));
+                        }
+                        break;
+                    case PopAni.FadeOut:
+                        CanvasGroupY.alpha = 1;
+                        AniSequence.Append(CanvasGroupY.DOFade(0, AniSeconds));
+                        break;
+                    default:
+                        break;
+                }
+                if (popAni != PopAni.None && PageType == PageType.Dialog && DialogWndMaskBGImg != null)
+                {
+                    DialogWndMaskBGImg.color = MaskColorShown;
+                    AniSequence.Join(DialogWndMaskBGImg.DOColor(MaskColorTouMing, AniSeconds));
+                }
+                AniSequence.OnComplete(complete);
             }
-            AniSequence.OnComplete(complete);
+        }
+    }
+    #endregion
+    #region 自定义 Push or Pop 动画
+    public partial class UIStackBaseWnd
+    {
+        protected virtual Sequence CreateCustomPushAniSequence()
+        {
+            return null;
+        }
+        protected virtual Sequence CreateCustomPopAniSequence()
+        {
+            return null;
         }
     }
     #endregion
@@ -296,14 +333,6 @@ namespace YUnity
         }
 
         /// <summary>
-        /// Push新页面或新弹框，实质还是调用的UIStackMag的push方法
-        /// </summary>
-        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, Sequence pushAni, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.Push(wnd, parent, pageType, pushAni, complete);
-        }
-
-        /// <summary>
         /// Push自己，实质还是调用的UIStackMag的push方法
         /// </summary>
         public void PushThis(Transform parent, PageType pageType, PushAni pushAni, Action<bool> complete = null)
@@ -314,23 +343,7 @@ namespace YUnity
         /// <summary>
         /// Push自己，实质还是调用的UIStackMag的push方法
         /// </summary>
-        public void PushThis(Transform parent, PageType pageType, Sequence pushAni, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.Push(this, parent, pageType, pushAni, complete);
-        }
-
-        /// <summary>
-        /// Push自己，实质还是调用的UIStackMag的push方法
-        /// </summary>
         public void PushSelf(Transform parent, PageType pageType, PushAni pushAni, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.Push(this, parent, pageType, pushAni, complete);
-        }
-
-        /// <summary>
-        /// Push自己，实质还是调用的UIStackMag的push方法
-        /// </summary>
-        public void PushSelf(Transform parent, PageType pageType, Sequence pushAni, Action<bool> complete = null)
         {
             UIStackMag.Instance.Push(this, parent, pageType, pushAni, complete);
         }
@@ -345,14 +358,6 @@ namespace YUnity
         public void Pop(PopReason popReason, PopAni popAni, Action<bool> complete = null)
         {
             UIStackMag.Instance.Pop(popReason, popAni, complete);
-        }
-
-        /// <summary>
-        /// Pop掉栈顶页面，实质还是调用的UIStackMag的pop方法
-        /// </summary>
-        public void Pop(PopReason popReason, Sequence customPopAni, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.Pop(popReason, customPopAni, complete);
         }
 
         /// <summary>
