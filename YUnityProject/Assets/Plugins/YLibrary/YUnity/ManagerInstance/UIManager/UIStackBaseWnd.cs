@@ -139,9 +139,12 @@ namespace YUnity
                 AniSequence = CreateCustomPushAniSequence();
                 if (AniSequence == null)
                 {
-                    AniSequence = DOTween.Sequence();
+                    complete?.Invoke();
                 }
-                AniSequence.OnComplete(complete);
+                else
+                {
+                    AniSequence.OnComplete(complete);
+                }
             }
             else
             {
@@ -228,9 +231,12 @@ namespace YUnity
                 AniSequence = CreateCustomPopAniSequence();
                 if (AniSequence == null)
                 {
-                    AniSequence = DOTween.Sequence();
+                    complete?.Invoke();
                 }
-                AniSequence.OnComplete(complete);
+                else
+                {
+                    AniSequence.OnComplete(complete);
+                }
             }
             else
             {
