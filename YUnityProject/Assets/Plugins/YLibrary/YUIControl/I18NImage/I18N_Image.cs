@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace YUIControl
 {
-    public class I18N_Image : UnityEngine.UI.Image
+    public class I18N_Image : Image
     {
         [Header("简体")]
         [SerializeField] private Sprite Jian;
@@ -38,6 +39,25 @@ namespace YUIControl
         {
             base.Reset();
             raycastTarget = false;
+        }
+        #endregion
+
+        #region 按钮交互
+        private Button _btn = null;
+        /// <summary>
+        /// 按钮交互，访问时如果没有Button则会进行添加操作
+        /// </summary>
+        public Button Btn
+        {
+            get
+            {
+                if (_btn != null) { return _btn; }
+                raycastTarget = true;
+                _btn = gameObject.GetComponent<Button>();
+                if (_btn != null) { return _btn; }
+                _btn = gameObject.AddComponent<Button>();
+                return _btn;
+            }
         }
         #endregion
 
