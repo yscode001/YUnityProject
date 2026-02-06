@@ -29,6 +29,8 @@ namespace YUnity
             }
         }
 
+        private static readonly TimeSpan TimeInterval = TimeSpan.FromSeconds(0.5f);
+
         /// <summary>
         /// 按钮点击扩展：过滤单点触摸 + 0.5秒节流 + 主线程执行
         /// </summary>
@@ -40,7 +42,7 @@ namespace YUnity
             }
             return button.onClick.AsObservable()
                   .Where(_ => Input.touchCount == 1)
-                  .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+                  .ThrottleFirst(TimeInterval)
                   .ObserveOnMainThread()
                   .Select(_ => button)
                   .Subscribe(callback)
@@ -58,7 +60,7 @@ namespace YUnity
             }
             return button.onClick.AsObservable()
                   .Where(_ => Input.touchCount == 1)
-                  .ThrottleFirst(TimeSpan.FromSeconds(0.5f))
+                  .ThrottleFirst(TimeInterval)
                   .ObserveOnMainThread()
                   .Subscribe(_ => { callback.Invoke(); })
                   .AddTo(button);
