@@ -12,13 +12,13 @@ namespace YOtherLibraryExt
         /// <param name="start">计数起始值</param>
         /// <param name="end">计数结束值（可大于/小于start，支持递增/递减）</param>
         /// <param name="current">每次计数的当前值回调（包含start和end；仅最后一步会自动将步进值修正为end，确保精准匹配结束值）</param>
-        /// <param name="step">步长（取值范围：1 ~ uint.MaxValue；uint类型保证非负；转换为int时若超过int.MaxValue会抛出OverflowException；实际会根据递增/递减自动添加正负方向）</param>
-        /// <param name="dueTime">首次执行延迟时间（默认TimeSpan.Zero，立即执行）</param>
-        /// <param name="period">计数时间间隔（默认TimeSpan.FromSeconds(1)，1秒/次）</param>
-        /// <param name="useMainThread">是否在Unity主线程执行所有回调（current/completed/canceled），默认true；
-        /// 注：Unity API（如Transform/Debug）必须在主线程执行，开启此参数可避免跨线程异常</param>
         /// <param name="completed">计数正常结束回调（手动Dispose不会触发）</param>
         /// <param name="canceled">计数被手动取消时的回调（调用Dispose触发）</param>
+        /// <param name="step">步长（取值范围：1 ~ uint.MaxValue；uint类型保证非负；转换为int时若超过int.MaxValue会抛出OverflowException；实际会根据递增/递减自动添加正负方向）</param>
+        /// <param name="useMainThread">是否在Unity主线程执行所有回调（current/completed/canceled），默认true；
+        /// 注：Unity API（如Transform/Debug）必须在主线程执行，开启此参数可避免跨线程异常</param>
+        /// <param name="dueTime">首次执行延迟时间（默认TimeSpan.Zero，立即执行）</param>
+        /// <param name="period">计数时间间隔（默认TimeSpan.FromSeconds(1)，1秒/次）</param>
         /// <returns>可释放对象，调用Dispose()可手动取消计数、触发canceled回调并释放资源；
         /// 注：Unity中建议使用AddTo(this)或加入CompositeDisposable统一管理，避免内存泄漏</returns>
         /// <exception cref="ArgumentException">参数不合法时抛出（start=end/step=0/dueTime<0/period≤0）</exception>
@@ -49,12 +49,12 @@ namespace YOtherLibraryExt
             int start,
             int end,
             Action<int> current,
-            uint step = 1,
-            TimeSpan dueTime = default,
-            TimeSpan period = default,
-            bool useMainThread = true,
             Action completed = null,
-            Action canceled = null)
+            Action canceled = null,
+            uint step = 1,
+            bool useMainThread = true,
+            TimeSpan dueTime = default,
+            TimeSpan period = default)
         {
             // 1. 严格入参校验（快速失败原则）
             if (start == end)
