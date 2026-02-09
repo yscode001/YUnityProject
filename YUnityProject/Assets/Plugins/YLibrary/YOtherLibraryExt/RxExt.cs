@@ -1,61 +1,234 @@
 using System;
 using UniRx;
+using UnityEngine;
 
 namespace YOtherLibraryExt
 {
-    public static class RxExt
+    public static partial class RxExt
     {
         /// <summary>
-        /// 双向计数器（支持正计数/倒计数）
+        /// 双向计数器（支持递增/递减）
         /// </summary>
         /// <param name="start">计数起始值</param>
-        /// <param name="end">计数结束值（可大于/小于start）</param>
-        /// <param name="current">每次计数的当前值回调（包含start和end，立即执行首次）</param>
-        /// <param name="interval">计数时间间隔，默认1秒</param>
-        /// <param name="onCompleted">计数正常结束后的回调（可选，手动取消不会触发）</param>
-        /// <returns>可释放对象，调用Dispose()可手动取消计数，释放资源</returns>
-        /// <exception cref="ArgumentNullException">current回调为空时抛出</exception>
-        /// <exception cref="ArgumentException">时间间隔小于等于0时抛出</exception>
-        public static IDisposable Counter(int start, int end, Action<int> current,
-            TimeSpan? interval = null,
-            Action onCompleted = null)
+        /// <param name="end">计数结束值（可大于/小于start，支持递增/递减）</param>
+        /// <param name="current">每次计数的当前值回调（包含start和end；仅最后一步会自动将步进值修正为end，确保精准匹配结束值）</param>
+        /// <param name="step">步长（取值范围：1 ~ uint.MaxValue；uint类型保证非负；转换为int时若超过int.MaxValue会抛出OverflowException；实际会根据递增/递减自动添加正负方向）</param>
+        /// <param name="dueTime">首次执行延迟时间（默认TimeSpan.Zero，立即执行）</param>
+        /// <param name="period">计数时间间隔（默认TimeSpan.FromSeconds(1)，1秒/次）</param>
+        /// <param name="useMainThread">是否在Unity主线程执行所有回调（current/completed/canceled），默认true；
+        /// 注：Unity API（如Transform/Debug）必须在主线程执行，开启此参数可避免跨线程异常</param>
+        /// <param name="completed">计数正常结束回调（手动Dispose不会触发）</param>
+        /// <param name="canceled">计数被手动取消时的回调（调用Dispose触发）</param>
+        /// <returns>可释放对象，调用Dispose()可手动取消计数、触发canceled回调并释放资源；
+        /// 注：Unity中建议使用AddTo(this)或加入CompositeDisposable统一管理，避免内存泄漏</returns>
+        /// <exception cref="ArgumentException">参数不合法时抛出（start=end/step=0/dueTime<0/period≤0）</exception>
+        /// <exception cref="ArgumentNullException">current回调为null时抛出</exception>
+        /// <exception cref="OverflowException">步长转换为int时溢出（step超过int.MaxValue）；总计数次数超过int.MaxValue时溢出；步进值计算时溢出</exception>
+        /// <example>
+        /// 递增示例：Counter(0, 10, val => Debug.Log(val), step:2) → 回调0→2→4→6→8→10
+        /// 递减示例：Counter(10, 0, val => Debug.Log(val), step:2) → 回调10→8→6→4→2→0
+        /// 边界示例：Counter(0, 7, val => Debug.Log(val), step:3) → 回调0→3→6→7（最后一步自动修正为end）
+        /// 取消示例：
+        /// var disposable = RxExt.Counter(0,10, val => Debug.Log(val));
+        /// disposable.Dispose(); // 触发canceled回调，终止计数（不会触发completed）
+        /// 资源管理示例（Unity）：
+        /// void Start()
+        /// {
+        ///     // 方式1：AddTo（推荐，自动在OnDestroy时释放）
+        ///     RxExt.Counter(0,10, val => Debug.Log(val)).AddTo(this);
+        ///     // 方式2：CompositeDisposable统一管理
+        ///     private CompositeDisposable _disposables = new CompositeDisposable();
+        ///     _disposables.Add(RxExt.Counter(0,10, val => Debug.Log(val)));
+        /// }
+        /// void OnDestroy()
+        /// {
+        ///     _disposables?.Dispose(); // 统一释放
+        /// }
+        /// </example>
+        public static IDisposable Counter(
+            int start,
+            int end,
+            Action<int> current,
+            uint step = 1,
+            TimeSpan dueTime = default,
+            TimeSpan period = default,
+            bool useMainThread = true,
+            Action completed = null,
+            Action canceled = null)
         {
-            // 1. 基础入参校验，快速失败
-            if (current == null)
-                throw new ArgumentNullException(nameof(current), "当前值回调委托不能为空");
-            // 间隔默认1秒，校验间隔合法性
-            var timeInterval = interval ?? TimeSpan.FromSeconds(1);
-            if (timeInterval <= TimeSpan.Zero)
-                throw new ArgumentException("计数时间间隔必须大于0", nameof(interval));
-
-            // 2. 起始值=结束值，执行一次回调+结束回调，返回空释放对象
+            // 1. 严格入参校验（快速失败原则）
             if (start == end)
             {
-                current.Invoke(start);
-                onCompleted?.Invoke();
-                return Disposable.Empty;
+                throw new ArgumentException($"起始值（{start}）不能等于结束值（{end}）", nameof(start));
+            }
+            if (current == null)
+            {
+                throw new ArgumentNullException(nameof(current), "计数回调不能为空");
+            }
+            if (step == 0)
+            {
+                throw new ArgumentException("步长必须大于0", nameof(step));
             }
 
-            // 3. 计算双向计数的核心参数（通用化，适配递增/递减）
-            int step = start > end ? -1 : 1; // 步长：递减=-1，递增=1
-            int totalCount = Math.Abs(start - end) + 1; // 总执行次数（包含首尾，例：5→1共5次，0→3共4次）
+            // 补全默认值并校验（简化写法，替代null判断）
+            dueTime = dueTime == default ? TimeSpan.Zero : dueTime;
+            if (dueTime < TimeSpan.Zero)
+            {
+                throw new ArgumentException($"首次执行延迟时间（{dueTime}）不能为负数", nameof(dueTime));
+            }
+            period = period == default ? TimeSpan.FromSeconds(1) : period;
+            if (period <= TimeSpan.Zero)
+            {
+                throw new ArgumentException($"计数时间间隔（{period}）必须大于0", nameof(period));
+            }
 
-            // 4. Rx.NET核心双向计数逻辑（通用化实现，无分支）
-            return Observable
-                // 立即执行（初始延迟0），之后按自定义间隔发射自增索引（0,1,2...）
-                .Timer(TimeSpan.Zero, timeInterval)
-                // 映射为当前计数值：起始值 + 步长 * 索引（适配递增/递减）
-                .Select(index => start + step * (int)index)
-                // 精准控制发射次数，确保最后一个值是end，避免无限序列
-                .Take(totalCount)
-                // 订阅序列，处理回调、结束、异常
-                .Subscribe(
-                    onNext: current,       // 每次计数的当前值回调（核心）
-                    onError: _ => { },     // 异常回调（此处无特殊处理，可按需扩展）
-                    onCompleted: onCompleted // 计数正常结束回调（手动Dispose不会触发）
-                );
+            // 2. 安全转换步长（uint→int，防止溢出）
+            int stepInt;
+            try
+            {
+                stepInt = checked((int)step);
+            }
+            catch (OverflowException ex)
+            {
+                throw new OverflowException($"步长{step}超过int类型最大值（{int.MaxValue}），无法转换", ex);
+            }
+
+            // 3. 计算递增/递减的实际步长（带方向）
+            int directionalStep = start < end ? stepInt : -stepInt;
+
+            // 4. 计算总执行步数（整数向上取整，避免浮点精度丢失；确保覆盖到end值）
+            long difference = (long)end - start;
+            long absoluteDifference = Math.Abs(difference);
+            long absoluteStep = stepInt;
+            long totalStepsLong = (absoluteDifference + absoluteStep - 1) / absoluteStep;
+
+            int totalSteps;
+            try
+            {
+                totalSteps = checked((int)totalStepsLong);
+            }
+            catch (OverflowException ex)
+            {
+                throw new OverflowException($"总计数步数{totalStepsLong}超过int最大值（{int.MaxValue}），无法执行", ex);
+            }
+
+            // 5. UniRx核心计数逻辑：携带index，用于判断是否是最后一步
+            var initialValue = Observable.Return((Value: start, IsLastStep: false)); // 初始值不是最后一步
+            var stepValues = Observable
+                .Timer(dueTime, period)
+                .Take(totalSteps) // 步进值的次数为总步数
+                .Select(index =>
+                {
+                    try
+                    {
+                        long stepMultiple = checked(directionalStep * (index + 1L));
+                        long nextValueLong = checked(start + stepMultiple);
+                        int nextValue = checked((int)nextValueLong);
+                        // 判断是否是最后一步（index从0开始，最后一步index=totalSteps-1）
+                        bool isLastStep = index == totalSteps - 1;
+                        return (Value: nextValue, IsLastStep: isLastStep);
+                    }
+                    catch (OverflowException ex)
+                    {
+                        throw new OverflowException($"步进值计算溢出：start={start} + directionalStep={directionalStep} * (index+1)={index + 1} 超出int范围", ex);
+                    }
+                });
+
+            var observable = initialValue.Concat(stepValues); // 合并：起始值 → 步进值
+
+            // 6. 统一线程处理
+            if (useMainThread)
+            {
+                observable = observable.ObserveOnMainThread();
+            }
+
+            // 7. 处理取消回调（异常捕获）
+            observable = observable.DoOnCancel(() =>
+            {
+                try
+                {
+                    canceled?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    LogError($"Cancel回调执行异常（start={start}, end={end}, step={step}）", ex);
+                }
+            });
+
+            // 8. 订阅回调（仅最后一步修正为end）
+            return observable.Subscribe(
+                onNext: tuple =>
+                {
+                    try
+                    {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                        if (!useMainThread && !MainThreadUtil.IsMainThread)
+                        {
+                            Debug.LogWarning($"[RxExt.Counter] useMainThread=false，当前回调在非主线程执行，若调用Unity API可能崩溃（start={start}, end={end}）");
+                        }
+#endif
+                        // 仅最后一步修正为end，确保精准匹配
+                        int finalVal = tuple.IsLastStep ? end : tuple.Value;
+                        current.Invoke(finalVal);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError($"Current计数回调执行异常（当前值：{tuple.Value}，是否最后一步：{tuple.IsLastStep}，start={start}, end={end}, step={step}）", ex);
+                    }
+                },
+                onError: ex =>
+                {
+                    LogError($"计数器执行异常（start={start}, end={end}, step={step}）", ex);
+                },
+                onCompleted: () =>
+                {
+                    try
+                    {
+                        completed?.Invoke();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError($"Completed回调执行异常（start={start}, end={end}, step={step}）", ex);
+                    }
+                }
+            );
         }
 
-        public static IDisposable Counter(int start, int end, Action<int> current) => Counter(start, end, current, null, null);
+        /// <summary>
+        /// 统一日志输出（适配Unity/非Unity环境）
+        /// </summary>
+        private static void LogError(string message, Exception ex)
+        {
+#if UNITY_ENGINE
+#if UNITY_EDITOR
+            Debug.LogError($"[RxExt.Counter] {message}：{ex}\n堆栈信息：{ex.StackTrace}");
+#else
+            Debug.LogError($"[RxExt.Counter] {message}：{ex.Message}");
+#endif
+#else
+            Console.WriteLine($"[RxExt.Counter] {message}：{ex}\n堆栈信息：{ex.StackTrace}");
+#endif
+        }
+    }
+
+    // 修复Unity主线程检测工具类
+    internal static class MainThreadUtil
+    {
+        private static int _mainThreadId = -1;
+
+        /// <summary>
+        /// Unity启动时自动初始化主线程ID（确保在主线程执行）
+        /// </summary>
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void InitializeMainThreadId()
+        {
+            _mainThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+        }
+
+        public static int GetMainThreadId() => _mainThreadId;
+
+        public static bool IsMainThread =>
+            _mainThreadId != -1 &&
+            System.Threading.Thread.CurrentThread.ManagedThreadId == _mainThreadId;
     }
 }
