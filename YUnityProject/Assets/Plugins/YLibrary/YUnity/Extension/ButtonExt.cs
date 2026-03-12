@@ -41,7 +41,7 @@ namespace YUnity
                 return Disposable.Empty;
             }
             return button.onClick.AsObservable()
-                  .Where(_ => Input.touchCount == 1)
+                  .Where(_ => Input.touchCount < 2)
                   .ThrottleFirst(TimeInterval)
                   .ObserveOnMainThread()
                   .Select(_ => button)
@@ -59,10 +59,10 @@ namespace YUnity
                 return Disposable.Empty;
             }
             return button.onClick.AsObservable()
-                  .Where(_ => Input.touchCount == 1)
+                  .Where(_ => Input.touchCount < 2)
                   .ThrottleFirst(TimeInterval)
                   .ObserveOnMainThread()
-                  .Subscribe(_ => { callback.Invoke(); })
+                  .Subscribe(_ => callback.Invoke())
                   .AddTo(button);
         }
     }
