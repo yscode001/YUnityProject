@@ -11,4 +11,8 @@ public class TipsWnd : MonoBehaviour
     {
         Instance = this;
     }
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
 }

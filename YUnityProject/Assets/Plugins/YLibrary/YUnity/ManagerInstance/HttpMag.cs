@@ -15,6 +15,10 @@ namespace YUnity
         {
             Instance = this;
         }
+        private void OnDestroy()
+        {
+            Instance = null;
+        }
     }
     #region 获取服务器上的文本文件的内容
     public partial class HttpMag

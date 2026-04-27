@@ -13,6 +13,10 @@ namespace YUnity
         {
             Instance = this;
         }
+        private void OnDestroy()
+        {
+            Instance = null;
+        }
     }
     #endregion
     #region 定义外界可使用的属性和方法

@@ -12,4 +12,8 @@ public class SceneLoadingWnd : MonoBehaviour
     {
         Instance = this;
     }
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
 }

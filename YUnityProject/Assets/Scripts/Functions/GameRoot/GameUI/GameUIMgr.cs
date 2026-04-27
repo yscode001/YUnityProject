@@ -8,4 +8,8 @@ public class GameUIMgr : MonoBehaviour
     {
         Instance = this;
     }
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
 }

@@ -12,4 +12,8 @@ public class HotUpdateWnd : MonoBehaviour
     {
         Instance = this;
     }
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
 }

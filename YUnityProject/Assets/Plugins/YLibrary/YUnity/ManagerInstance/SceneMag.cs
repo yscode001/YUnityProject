@@ -14,7 +14,12 @@ namespace YUnity
 
         internal void Init()
         {
+            enabled = false;
             Instance = this;
+        }
+        private void OnDestroy()
+        {
+            Instance = null;
         }
     }
     public partial class SceneMag
@@ -45,6 +50,7 @@ namespace YUnity
             progressCallback = progress;
             this.complete = complete;
 
+            enabled = true;
             AsyncOperation sceneAsync = SceneManager.LoadSceneAsync(sceneName);
             begin?.Invoke(sceneAsync);
             progressCB = () =>
@@ -66,6 +72,7 @@ namespace YUnity
                     sceneAsync = null;
                     progressCB = null;
                     LastSwitchedSceneName = sceneName;
+                    enabled = false;
                 }
             };
         }

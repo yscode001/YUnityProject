@@ -17,4 +17,8 @@ public class GlobalUI : MonoBehaviour
         hotUpdateWnd.Init();
         tipsWnd.Init();
     }
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
 }

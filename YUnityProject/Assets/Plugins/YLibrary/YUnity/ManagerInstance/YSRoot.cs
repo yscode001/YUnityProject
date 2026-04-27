@@ -6,6 +6,11 @@ namespace YUnity
     {
         private YSRoot() { }
         public static YSRoot Instance { get; private set; } = null;
+
+        private void OnDestroy()
+        {
+            Instance = null;
+        }
     }
     public partial class YSRoot
     {
@@ -27,7 +32,6 @@ namespace YUnity
             rootGO.AddComponent<AudioMag>().Init();
             rootGO.AddComponent<ABLoadUtil>().Init();
             rootGO.AddComponent<HttpMag>().Init();
-            rootGO.AddComponent<AsyncImage>().Init();
         }
     }
 }

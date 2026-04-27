@@ -15,6 +15,10 @@ namespace YUnity
         {
             Instance = this;
         }
+        private void OnDestroy()
+        {
+            Instance = null;
+        }
     }
     #region 获取已加载的AssetBundle
     internal partial class ABLoadUtil

@@ -11,4 +11,8 @@ public class LoadingWnd : MonoBehaviour
     {
         Instance = this;
     }
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
 }
