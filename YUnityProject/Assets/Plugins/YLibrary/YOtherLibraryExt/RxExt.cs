@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using UniRx;
 using UnityEngine;
 
 namespace YOtherLibraryExt
 {
+    #region 双向计数器
     public static partial class RxExt
     {
         /// <summary>
@@ -210,6 +212,82 @@ namespace YOtherLibraryExt
 #endif
         }
     }
+    #endregion
+
+    #region 异步任务扩展
+    public static partial class RxExt
+    {
+        /// <summary>
+        /// 异步操作转Observable(只监听完成)
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <returns></returns>
+        public static IObservable<AsyncOperation> ToObservable(this AsyncOperation operation)
+        {
+            // 空检查
+            if (operation == null)
+            {
+                return Observable.Throw<AsyncOperation>(new ArgumentNullException(nameof(operation)));
+            }
+            // 协程包装
+            return Observable.FromCoroutine<AsyncOperation>(observer =>
+            {
+                IEnumerator WatchOperation()
+                {
+                    // 等待异步执行完毕
+                    yield return operation;
+
+                    // 执行完成
+                    observer.OnNext(operation);
+                    observer.OnCompleted();
+                }
+
+                return WatchOperation();
+            });
+        }
+
+        /// <summary>
+        /// 异步操作转Observable(只监听完成，无参数)
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <returns></returns>
+        public static IObservable<Unit> ToObservable_Complete(this AsyncOperation operation)
+        {
+            return operation.ToObservable().AsUnitObservable();
+        }
+
+        /// <summary>
+        /// 异步操作转Observable(监听异步操作的实时进度：0~1)
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <returns></returns>
+        public static IObservable<float> ToObservable_Progress(this AsyncOperation operation)
+        {
+            if (operation == null)
+            {
+                return Observable.Throw<float>(new ArgumentNullException(nameof(operation)));
+            }
+            return Observable.FromCoroutine<float>(observer =>
+            {
+                IEnumerator WatchProgress()
+                {
+                    while (operation.isDone == false)
+                    {
+                        observer.OnNext(operation.progress);
+                        // 等3帧，不用太频繁
+                        yield return Observable.NextFrame().DelayFrame(2).ToYieldInstruction();
+                    }
+
+                    // 最后推送 100%
+                    observer.OnNext(1f);
+                    observer.OnCompleted();
+                }
+
+                return WatchProgress();
+            });
+        }
+    }
+    #endregion
 
     // 修复Unity主线程检测工具类
     internal static class MainThreadUtil
