@@ -9,10 +9,9 @@ public class LoginWnd : UIStackBaseWnd
     [SerializeField] private Text TipsText;
     [SerializeField] private Button LoginBtn;
 
-    public override void BeforePush()
+    private void Start()
     {
-        base.BeforePush();
         TipsText.text = "请输入用户名和密码";
-        TipsText.color = Color.green;
+        TipsText.color = Color.blue;
     }
 }

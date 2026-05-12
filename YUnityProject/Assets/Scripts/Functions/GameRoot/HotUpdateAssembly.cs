@@ -23,7 +23,7 @@ public class HotUpdateAssembly : MonoBehaviour
         // Editor下，已经被自动加载，不需要手动加载，重复加载反而会出问题。直接查找获得HotUpdate程序集。
         HybridHotupdateAss = System.AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "HybridHotupdate");
 #else
-        HybridHotupdateAss = Assembly.Load(File.ReadAllBytes($"{Application.streamingAssetsPath}/Hybrid/HybridHotupdate.dll.bytes"));
+        HybridHotupdateAss = Assembly.Load(File.ReadAllBytes($"{Application.persistentDataPath}/Hybrid/HybridHotupdate.dll.bytes"));
 #endif
     }
     private void OnDestroy()
