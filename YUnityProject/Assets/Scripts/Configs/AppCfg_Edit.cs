@@ -3,7 +3,7 @@ public static partial class AppCfg
     /// <summary>
     /// 环境配置
     /// </summary>
-    private const EnvEnum envEnum = EnvEnum.online;
+    private const EnvEnum envEnum = EnvEnum.develop;
 
     /// <summary>
     /// 是否开启日志打印

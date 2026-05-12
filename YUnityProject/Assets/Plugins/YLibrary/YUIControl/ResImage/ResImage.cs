@@ -10,13 +10,14 @@ namespace YUIControl
     {
         public string Identifier { get; private set; } = null;
 
-        #region 默认禁用交互
+#if UNITY_EDITOR
+        // 默认禁用交互
         protected override void Reset()
         {
             base.Reset();
             raycastTarget = false;
         }
-        #endregion
+#endif
 
         #region 按钮交互
         private Button _btn = null;

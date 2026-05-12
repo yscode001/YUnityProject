@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using YUnity;
 
 public class LoginRoot : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
-    }
+        SceneLoader.Instance.SceneSwitchFinishedAndInitDone(SceneNames.Login);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        ABLoader.LoadGameObject("ui_3bfcf6066527c1a2d798675a16348ca9", "LoginWnd.prefab", (ab, prefab) =>
+        {
+            if (prefab != null)
+            {
+                GameObject.Instantiate(prefab, GameUIMgr.Instance.transform);
+            }
+        });
     }
 }

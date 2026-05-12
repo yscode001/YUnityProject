@@ -1,8 +1,9 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace YUtilEditor
+namespace YEditor
 {
     [Serializable]
     public class ABBuildManifestFile
@@ -28,3 +29,4 @@ namespace YUtilEditor
         }
     }
 }
+#endif

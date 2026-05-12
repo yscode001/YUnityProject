@@ -1,7 +1,8 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+using System;
 using YCSharp;
 
-namespace YUtilEditor
+namespace YEditor
 {
     public class ABBuilderHelper
     {
@@ -37,3 +38,4 @@ namespace YUtilEditor
         }
     }
 }
+#endif

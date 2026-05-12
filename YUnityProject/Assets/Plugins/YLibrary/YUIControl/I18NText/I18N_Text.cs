@@ -37,14 +37,6 @@ namespace YUIControl
             }
         }
 
-        #region 默认禁用交互
-        protected override void Reset()
-        {
-            base.Reset();
-            raycastTarget = false;
-        }
-        #endregion
-
         #region 按钮交互
         private Button _btn = null;
         /// <summary>
@@ -65,6 +57,13 @@ namespace YUIControl
         #endregion
 
 #if UNITY_EDITOR
+        // 默认禁用交互
+        protected override void Reset()
+        {
+            base.Reset();
+            raycastTarget = false;
+        }
+
         // 在编辑器中实时预览效果
         protected override void OnValidate()
         {

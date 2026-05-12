@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 
 namespace YUIControl
@@ -8,3 +9,4 @@ namespace YUIControl
 
     }
 }
+#endif

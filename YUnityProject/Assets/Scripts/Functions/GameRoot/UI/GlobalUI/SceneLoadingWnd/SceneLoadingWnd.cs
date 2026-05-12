@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
-using YUIControl;
+using YUnity;
 
 public class SceneLoadingWnd : MonoBehaviour
 {
-    [SerializeField] private ProgressBarImage progressImg;
+    [SerializeField] private Image progressImg;
     [SerializeField] private Text tipsText;
 
     public static SceneLoadingWnd Instance { get; private set; } = null;
@@ -16,6 +16,7 @@ public class SceneLoadingWnd : MonoBehaviour
             DestroyImmediate(Instance);
         }
         Instance = this;
+        this.SetAct(false);
     }
     private void OnDestroy()
     {

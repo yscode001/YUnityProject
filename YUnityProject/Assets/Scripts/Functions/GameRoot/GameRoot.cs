@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 using YUnity;
 
@@ -20,8 +20,7 @@ public class GameRoot : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            Init();
-            InitDone();
+            Init(InitDone);
         }
         else
         {
@@ -32,7 +31,7 @@ public class GameRoot : MonoBehaviour
     {
         Instance = null;
     }
-    private void Init()
+    private void Init(Action complete)
     {
         // 不销毁
         DontDestroyOnLoad(gameObject);
@@ -53,13 +52,20 @@ public class GameRoot : MonoBehaviour
         Screen.autorotateToLandscapeRight = false;
         // 类库初始化
         YSRoot.Init(AppCfg.IsEnableLog);
+        // 一些全局类初始化
+        gameObject.AddComponent<SceneLoader>().Init();
         // UI管理器初始化
         gameUIMgr.Init();
         newbieGuideUIMgr.Init();
         globalUIMgr.Init();
+        // 所有初始化完成后，下载热更资源
+        HotUpdateWnd.Instance.CheckAndDownload(complete);
     }
     private void InitDone()
     {
+        // 初始化华佗
+        gameObject.AddComponent<HotUpdateAssembly>().Init();
+        // 跳转场景
         string targetScene = string.IsNullOrWhiteSpace(CurUser.Instance.token) ? SceneNames.Login : SceneNames.Lobby;
         SceneMag.Instance.LoadSceneAsync(targetScene, null, null, null);
     }

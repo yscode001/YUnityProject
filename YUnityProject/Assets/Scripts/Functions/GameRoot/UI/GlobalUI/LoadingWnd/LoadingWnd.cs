@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using YUnity;
 
 public class LoadingWnd : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class LoadingWnd : MonoBehaviour
             DestroyImmediate(Instance);
         }
         Instance = this;
+        this.SetAct(false);
     }
     private void OnDestroy()
     {

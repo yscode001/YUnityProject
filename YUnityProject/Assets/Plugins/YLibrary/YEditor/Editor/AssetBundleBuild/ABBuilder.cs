@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿#if UNITY_EDITOR
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 using YCSharp;
 
-namespace YUtilEditor
+namespace YEditor
 {
     #region Init
     public static partial class ABBuilder
@@ -43,7 +44,7 @@ namespace YUtilEditor
     #region Build
     public static partial class ABBuilder
     {
-        public static void BuildAssetBundles(BuildTarget buildTarget)
+        public static void BuildAssetBundles(UnityEditor.BuildTarget buildTarget)
         {
             if (string.IsNullOrWhiteSpace(ResSourceDirectory) || !Directory.Exists(ResSourceDirectory))
             {
@@ -233,3 +234,4 @@ namespace YUtilEditor
     }
     #endregion
 }
+#endif

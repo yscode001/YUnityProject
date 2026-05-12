@@ -157,12 +157,14 @@ namespace YUIControl
             }
         }
 
+#if UNITY_EDITOR
         // 编辑器校验
         protected override void OnValidate()
         {
             animDuration = Mathf.Max(0.1f, animDuration);
             loopCount = Mathf.Max(1, loopCount);
         }
+#endif
 
         // ---------------------- 拓展：代码绑定回调的示例（可选） ----------------------
         protected override void Start()

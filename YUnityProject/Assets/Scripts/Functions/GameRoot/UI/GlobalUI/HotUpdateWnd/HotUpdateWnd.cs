@@ -1,10 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using YUIControl;
+using YUnity;
 
-public class HotUpdateWnd : MonoBehaviour
+public partial class HotUpdateWnd : MonoBehaviour
 {
-    [SerializeField] private ProgressBarImage progressImg;
+    [SerializeField] private Image progressImg;
     [SerializeField] private Text tipsText;
 
     public static HotUpdateWnd Instance { get; private set; } = null;
@@ -16,9 +17,17 @@ public class HotUpdateWnd : MonoBehaviour
             DestroyImmediate(Instance);
         }
         Instance = this;
+        this.SetAct(false);
     }
     private void OnDestroy()
     {
         Instance = null;
+    }
+}
+public partial class HotUpdateWnd
+{
+    public void CheckAndDownload(Action complete)
+    {
+        complete?.Invoke();
     }
 }

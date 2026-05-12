@@ -1,5 +1,7 @@
+using System;
 using YUnity;
 
+[Serializable]
 public class CurUser : SingletonPersistentBaseY<CurUser>
 {
     protected CurUser() { }

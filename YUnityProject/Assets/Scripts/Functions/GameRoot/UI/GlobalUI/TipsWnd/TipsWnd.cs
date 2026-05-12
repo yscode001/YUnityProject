@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using YUnity;
 
 public class TipsWnd : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class TipsWnd : MonoBehaviour
             DestroyImmediate(Instance);
         }
         Instance = this;
+        this.SetAct(false);
     }
     private void OnDestroy()
     {

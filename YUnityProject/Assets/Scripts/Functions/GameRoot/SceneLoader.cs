@@ -4,7 +4,20 @@ using UnityEngine;
 
 public partial class SceneLoader : MonoBehaviour
 {
+    public static SceneLoader Instance { get; private set; } = null;
 
+    public void Init()
+    {
+        if (Instance != null && Instance != this)
+        {
+            DestroyImmediate(Instance);
+        }
+        Instance = this;
+    }
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
 }
 #region 切换完成
 public readonly struct SceneLoadedModel
@@ -20,16 +33,17 @@ public readonly struct SceneLoadedModel
 }
 public partial class SceneLoader
 {
-    private string _prevSceneName = null;
+    public string PrevSceneName { get; private set; } = null;
+    public string CurSceneName { get; private set; } = null;
 
     private readonly Subject<SceneLoadedModel> _sceneSwitchFinished = new Subject<SceneLoadedModel>();
     public IObservable<SceneLoadedModel> SceneSwitchFinished => _sceneSwitchFinished;
 
     public void SceneSwitchFinishedAndInitDone(string newSceneName)
     {
-        SceneLoadedModel loadedModel = new SceneLoadedModel(_prevSceneName, newSceneName);
-        _prevSceneName = newSceneName;
-        _sceneSwitchFinished.OnNext(loadedModel);
+        PrevSceneName = CurSceneName;
+        CurSceneName = newSceneName;
+        _sceneSwitchFinished.OnNext(new SceneLoadedModel(PrevSceneName, CurSceneName));
     }
 }
 #endregion
