@@ -11,6 +11,9 @@ ProjectSettings.asset
 AndroidResolverDependencies.xml
 StreamingAssets
 
+# 华佗热更
+HybridCLRData
+
 XiuXianIOS/
 
 [Mm]emoryCaptures

@@ -1,14 +1,18 @@
 using UnityEngine;
-using YUIControl;
+using UnityEngine.UI;
 
 public class LoadingWnd : MonoBehaviour
 {
-    [SerializeField] private I18N_Image iconImg;
+    [SerializeField] private Image iconImg;
 
     public static LoadingWnd Instance { get; private set; } = null;
 
     public void Init()
     {
+        if (Instance != null && Instance != this)
+        {
+            DestroyImmediate(Instance);
+        }
         Instance = this;
     }
     private void OnDestroy()
