@@ -14,7 +14,7 @@ namespace YUnity
     {
         protected SingletonPersistentBaseY() { }
 
-        public static readonly string LocalFilePath = Application.persistentDataPath + "/" + typeof(T).Name + ".fun";
+        public static readonly string LocalFilePath = Path.Combine(Application.persistentDataPath, "PersistentData", typeof(T).Name + ".fun");
         public static readonly string ClassName = typeof(T).Name;
 
         private static readonly Lazy<T> _instance = new Lazy<T>(() =>

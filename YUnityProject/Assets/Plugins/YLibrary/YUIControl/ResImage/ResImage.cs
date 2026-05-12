@@ -10,15 +10,6 @@ namespace YUIControl
     {
         public string Identifier { get; private set; } = null;
 
-#if UNITY_EDITOR
-        // 默认禁用交互
-        protected override void Reset()
-        {
-            base.Reset();
-            raycastTarget = false;
-        }
-#endif
-
         #region 按钮交互
         private Button _btn = null;
         /// <summary>
@@ -79,5 +70,14 @@ namespace YUIControl
                 // 注意，加载是异步的，加载成功后，需再次判断Identifier
             }
         }
+
+#if UNITY_EDITOR
+        // 默认禁用交互
+        protected override void Reset()
+        {
+            base.Reset();
+            raycastTarget = false;
+        }
+#endif
     }
 }
