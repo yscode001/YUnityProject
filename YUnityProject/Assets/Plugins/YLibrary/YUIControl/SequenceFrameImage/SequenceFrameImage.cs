@@ -175,13 +175,11 @@ namespace YUIControl
             });
         }
 
-#if UNITY_EDITOR
-        // 编辑器校验
-        protected override void OnValidate()
+        #region 默认禁用交互
+        new private void Reset()
         {
-            animDuration = Mathf.Max(0.1f, animDuration);
-            loopCount = Mathf.Max(1, loopCount);
+            raycastTarget = false;
         }
-#endif
+        #endregion
     }
 }

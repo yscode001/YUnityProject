@@ -1,0 +1,16 @@
+{
+    "name": "YEditor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e370d523386e648beab7ad3b67594d9f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

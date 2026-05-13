@@ -127,13 +127,11 @@ namespace YUIControl
             }
         }
 
-#if UNITY_EDITOR
-        // 默认禁用交互
-        protected override void Reset()
+        #region 默认禁用交互
+        new private void Reset()
         {
-            base.Reset();
             raycastTarget = false;
         }
-#endif
+        #endregion
     }
 }
