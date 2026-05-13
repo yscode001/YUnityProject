@@ -1,31 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <linker>
-  <assembly fullname="UniRx">
-    <type fullname="UniRx.Subject`1" preserve="all" />
+  <assembly fullname="ProjAssembly">
+    <type fullname="SceneLoader" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.CoreModule">
-    <type fullname="UnityEngine.Application" preserve="all" />
     <type fullname="UnityEngine.Color" preserve="all" />
-    <type fullname="UnityEngine.Component" preserve="all" />
-    <type fullname="UnityEngine.HeaderAttribute" preserve="all" />
     <type fullname="UnityEngine.MonoBehaviour" preserve="all" />
-    <type fullname="UnityEngine.Object" preserve="all" />
     <type fullname="UnityEngine.SerializeField" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.UI">
     <type fullname="UnityEngine.UI.Button" preserve="all" />
     <type fullname="UnityEngine.UI.Graphic" preserve="all" />
-    <type fullname="UnityEngine.UI.Image" preserve="all" />
     <type fullname="UnityEngine.UI.InputField" preserve="all" />
     <type fullname="UnityEngine.UI.Text" preserve="all" />
   </assembly>
-  <assembly fullname="YUnity">
-    <type fullname="YUnity.ComponentExt" preserve="all" />
-    <type fullname="YUnity.SingletonPersistentBaseY`1" preserve="all" />
+  <assembly fullname="YLibrary">
     <type fullname="YUnity.UIStackBaseWnd" preserve="all" />
   </assembly>
   <assembly fullname="netstandard">
-    <type fullname="System.Action" preserve="all" />
     <type fullname="System.Array" preserve="all" />
     <type fullname="System.Byte" preserve="all" />
     <type fullname="System.CodeDom.Compiler.GeneratedCodeAttribute" preserve="all" />
@@ -33,19 +25,12 @@
     <type fullname="System.ComponentModel.EditorBrowsableState" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute/DebuggingModes" preserve="all" />
-    <type fullname="System.Enum" preserve="all" />
-    <type fullname="System.IO.File" preserve="all" />
-    <type fullname="System.IO.Path" preserve="all" />
-    <type fullname="System.IObservable`1" preserve="all" />
     <type fullname="System.Object" preserve="all" />
-    <type fullname="System.Reflection.Assembly" preserve="all" />
     <type fullname="System.Runtime.CompilerServices.CompilationRelaxationsAttribute" preserve="all" />
     <type fullname="System.Runtime.CompilerServices.CompilerGeneratedAttribute" preserve="all" />
-    <type fullname="System.Runtime.CompilerServices.IsReadOnlyAttribute" preserve="all" />
     <type fullname="System.Runtime.CompilerServices.RuntimeCompatibilityAttribute" preserve="all" />
     <type fullname="System.Runtime.CompilerServices.RuntimeHelpers" preserve="all" />
     <type fullname="System.RuntimeFieldHandle" preserve="all" />
-    <type fullname="System.String" preserve="all" />
     <type fullname="System.ValueType" preserve="all" />
   </assembly>
 </linker>

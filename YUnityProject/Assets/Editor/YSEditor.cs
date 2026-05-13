@@ -38,7 +38,7 @@ public static partial class YSEditor
     public static void ClearABRes()
     {
         Debug.Log("正在清理AB资源包...\n");
-        ABBuilder.Init(ProjectPaths.AB.SourceDir);
+        ABBuilder.Init(Paths.AB.SourceDir);
         ABBuilder.ClearBundles();
         Debug.Log($"AB资源包清理完毕\n");
     }
@@ -47,7 +47,7 @@ public static partial class YSEditor
     public static void BuildABResOSX()
     {
         Debug.Log("正在生成AB资源包...\n");
-        ABBuilder.Init(ProjectPaths.AB.SourceDir);
+        ABBuilder.Init(Paths.AB.SourceDir);
         ABBuilder.BuildAssetBundles(BuildTarget.StandaloneOSX);
         Debug.Log($"AB资源包生成完毕\n");
     }
@@ -56,7 +56,7 @@ public static partial class YSEditor
     public static void BuildABResIOS()
     {
         Debug.Log("正在生成AB资源包...\n");
-        ABBuilder.Init(ProjectPaths.AB.SourceDir);
+        ABBuilder.Init(Paths.AB.SourceDir);
         ABBuilder.BuildAssetBundles(BuildTarget.iOS);
         Debug.Log($"AB资源包生成完毕\n");
     }
@@ -65,7 +65,7 @@ public static partial class YSEditor
     public static void BuildABResWindows64()
     {
         Debug.Log("正在生成AB资源包...\n");
-        ABBuilder.Init(ProjectPaths.AB.SourceDir);
+        ABBuilder.Init(Paths.AB.SourceDir);
         ABBuilder.BuildAssetBundles(BuildTarget.StandaloneWindows64);
         Debug.Log($"AB资源包生成完毕\n");
     }
@@ -74,7 +74,7 @@ public static partial class YSEditor
     public static void BuildABResAndroid()
     {
         Debug.Log("正在生成AB资源包...\n");
-        ABBuilder.Init(ProjectPaths.AB.SourceDir);
+        ABBuilder.Init(Paths.AB.SourceDir);
         ABBuilder.BuildAssetBundles(BuildTarget.Android);
         Debug.Log($"AB资源包生成完毕\n");
     }
@@ -83,7 +83,7 @@ public static partial class YSEditor
     public static void BuildABResWebGL()
     {
         Debug.Log("正在生成AB资源包...\n");
-        ABBuilder.Init(ProjectPaths.AB.SourceDir);
+        ABBuilder.Init(Paths.AB.SourceDir);
         ABBuilder.BuildAssetBundles(BuildTarget.WebGL);
         Debug.Log($"AB资源包生成完毕\n");
     }

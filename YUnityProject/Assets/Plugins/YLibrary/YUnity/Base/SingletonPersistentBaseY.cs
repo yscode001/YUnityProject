@@ -14,7 +14,8 @@ namespace YUnity
     {
         protected SingletonPersistentBaseY() { }
 
-        public static readonly string LocalFilePath = Path.Combine(Application.persistentDataPath, "PersistentData", typeof(T).Name + ".fun");
+        public static readonly string LocalFileDir = Path.Combine(Application.persistentDataPath, "PersistentData");
+        public static readonly string LocalFilePath = Path.Combine(LocalFileDir, typeof(T).Name + ".fun");
         public static readonly string ClassName = typeof(T).Name;
 
         private static readonly Lazy<T> _instance = new Lazy<T>(() =>
@@ -75,6 +76,10 @@ namespace YUnity
             try
             {
                 DoBeforePersistent();
+                if (Directory.Exists(LocalFileDir) == false)
+                {
+                    Directory.CreateDirectory(LocalFileDir);
+                }
                 BinaryFormatter formatter = new BinaryFormatter();
                 FileStream stream = new FileStream(LocalFilePath, FileMode.OpenOrCreate);
                 formatter.Serialize(stream, this);

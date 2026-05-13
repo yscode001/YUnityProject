@@ -1,6 +1,6 @@
 {
   "AssetBundles": [
-    "ui_3bfcf6066527c1a2d798675a16348ca9.unity3d",
+    "login_00862d06a5e1cfd2372dbbe29c6f48b3.unity3d",
     "manifest.unity3d"
   ]
 }

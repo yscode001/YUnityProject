@@ -1,0 +1,22 @@
+{
+    "name": "Lobby",
+    "rootNamespace": "",
+    "references": [
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
+        "GUID:3d74cf41a9708450c9fca4772b784b4d",
+        "GUID:e370d523386e648beab7ad3b67594d9f",
+        "GUID:9091b912184894a2dabb317793083862"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "DOTween.dll",
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

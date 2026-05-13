@@ -13,7 +13,7 @@ namespace YEditor
         /// <summary>
         /// 资源所在的根目录
         /// </summary>
-        private static string? ResSourceDirectory;
+        private static string ResSourceDirectory;
 
         /// <summary>
         /// 资源输出目录
@@ -105,7 +105,7 @@ namespace YEditor
         }
 
         // 获取文件夹中可以build的文件集合(包括子文件夹)
-        private static List<FileInfo>? GetFilesWillBeBuiled(DirectoryInfo directoryInfo)
+        private static List<FileInfo> GetFilesWillBeBuiled(DirectoryInfo directoryInfo)
         {
             if (directoryInfo == null || !directoryInfo.Exists) { return null; }
             FileInfo[] fileInfos = directoryInfo.GetFiles("*", SearchOption.AllDirectories);
@@ -130,7 +130,7 @@ namespace YEditor
             AssetBundleBuild build = new AssetBundleBuild();
             build.assetBundleName = ABBuilderHelper.GetAssetBundleName(directoryInfo.Name);
 
-            List<FileInfo>? fileInfolist = GetFilesWillBeBuiled(directoryInfo);
+            List<FileInfo> fileInfolist = GetFilesWillBeBuiled(directoryInfo);
             List<string> fileNames = new List<string>();
             if (fileInfolist != null)
             {

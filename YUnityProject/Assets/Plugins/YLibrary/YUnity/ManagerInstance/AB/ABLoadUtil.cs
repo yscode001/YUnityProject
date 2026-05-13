@@ -87,7 +87,7 @@ namespace YUnity
         }
         private IEnumerator LoadAssetBundleAction(string abFullPath, Action<AssetBundle> complete)
         {
-            UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(abFullPath);
+            UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle("file://" + abFullPath);
             yield return request.SendWebRequest();
             if (request.result == UnityWebRequest.Result.Success)
             {

@@ -5,9 +5,6 @@ using YUnity;
 
 public class GameRoot : MonoBehaviour
 {
-    [Header("主要模块的热更")]
-    [SerializeField] private MainHotUpdateWnd mainHotUpdateWnd;
-
     private static GameRoot Instance = null;
 
     private void Start()
@@ -47,38 +44,26 @@ public class GameRoot : MonoBehaviour
         Screen.autorotateToLandscapeRight = false;
         // 类库初始化
         YSRoot.Init(AppCfg.IsEnableLog);
-        // 一些全局类初始化
+        // 初始化一些全局类
         gameObject.AddComponent<SceneLoader>().Init();
+        // 初始化Canvas
+        GetComponentInChildren<GameUIMgr>().Init();
+        GetComponentInChildren<NewbieGuideUIMgr>().Init();
+        GetComponentInChildren<GlobalUIMgr>().Init();
         // 所有初始化完成后，下载主要模块的热更资源
-        mainHotUpdateWnd.Init();
-        mainHotUpdateWnd.CheckAndDownload(complete);
+        ABLoader.InitBundlePathBeforeHotUpdate(Paths.AB.BundleDir);
+        MainHotUpdateWnd.Instance.CheckAndDownload(complete);
     }
     private void AfterMainHotupdate()
     {
         // 初始化华佗，加载程序集
         HotUpdateAssembly.Init();
         // 初始化AB
-        ABLoader.InitBundlePathBeforeHotUpdate(ProjectPaths.AB.BundleDir);
         ABLoader.InitManifestAfterHotUpdate(ABHelper.Manifest, () =>
         {
-            // 生成全局的UI
-            ABLoader.LoadGameObjectInstantiate(ABNames.GameRoot.BundleName, ABNames.GameRoot.GameUICanvas, transform, (_, gameUIGO) =>
-            {
-                gameUIGO.GetOrAddComponent<GameUIMgr>().Init();
-                ABLoader.LoadGameObjectInstantiate(ABNames.GameRoot.BundleName, ABNames.GameRoot.NewbieGuideUICanvas, transform, (_, guideUIGO) =>
-                {
-                    guideUIGO.GetOrAddComponent<NewbieGuideUIMgr>().Init();
-                    ABLoader.LoadGameObjectInstantiate(ABNames.GameRoot.BundleName, ABNames.GameRoot.GlobalUICanvas, transform, (_, globalUIGO) =>
-                    {
-                        globalUIGO.GetOrAddComponent<GlobalUIMgr>().Init();
-                        // 跳转场景
-                        string targetScene = string.IsNullOrWhiteSpace(CurUser.Instance.token) ? SceneNames.Login : SceneNames.Lobby;
-                        SceneMag.Instance.LoadSceneAsync(targetScene, null, null, null);
-                        // 销毁mainHotUpdateWnd
-                        DestroyImmediate(mainHotUpdateWnd.gameObject);
-                    });
-                });
-            });
+            // 跳转场景
+            string targetScene = string.IsNullOrWhiteSpace(CurUser.Instance.token) ? SceneNames.Login : SceneNames.Lobby;
+            SceneMag.Instance.LoadSceneAsync(targetScene, null, null, null);
         });
     }
 }
