@@ -14,6 +14,10 @@ namespace YUIControl
         [Header("Editor预览：是否显示简体")]
         [SerializeField] private bool ShowJian = true;
 
+        public Sprite JianVal => Jian;
+        public Sprite FanVal => Fan;
+        public bool ShowJianVal => ShowJian;
+
         private bool IsSetedBySprite = false;
 
         public new Sprite sprite
@@ -59,23 +63,6 @@ namespace YUIControl
         {
             base.Reset();
             raycastTarget = false;
-        }
-
-        // 在编辑器中实时预览效果
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-            if (UnityEditor.EditorApplication.isPlaying == false)
-            {
-                if (ShowJian && Jian != null && sprite != Jian)
-                {
-                    sprite = Jian;
-                }
-                else if (!ShowJian && Fan != null && sprite != Fan)
-                {
-                    sprite = Fan;
-                }
-            }
         }
 #endif
     }

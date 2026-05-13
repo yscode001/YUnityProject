@@ -32,6 +32,21 @@ namespace YUIControl
             EditorGUILayout.Space();
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("基础属性", EditorStyles.boldLabel);
+
+            // 编辑器实时预览
+            if (EditorApplication.isPlaying == false)
+            {
+                I18N_Text textCtrl = (I18N_Text)target;
+                if (textCtrl.ShowJianVal && !string.IsNullOrWhiteSpace(textCtrl.JianVal) && textCtrl.text != textCtrl.JianVal)
+                {
+                    textCtrl.text = textCtrl.JianVal;
+                }
+                else if (!textCtrl.ShowJianVal && !string.IsNullOrWhiteSpace(textCtrl.FanVal) && textCtrl.text != textCtrl.FanVal)
+                {
+                    textCtrl.text = textCtrl.FanVal;
+                }
+            }
+
             base.OnInspectorGUI();
         }
 

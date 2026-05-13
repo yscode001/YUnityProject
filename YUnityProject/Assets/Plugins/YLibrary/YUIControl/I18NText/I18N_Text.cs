@@ -16,6 +16,10 @@ namespace YUIControl
         [Header("Editor预览：是否显示简体")]
         [SerializeField] private bool ShowJian = true;
 
+        public string JianVal => Jian;
+        public string FanVal => Fan;
+        public bool ShowJianVal => ShowJian;
+
         private bool IsSetedByText = false;
 
         public override string text
@@ -62,23 +66,6 @@ namespace YUIControl
         {
             base.Reset();
             raycastTarget = false;
-        }
-
-        // 在编辑器中实时预览效果
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-            if (UnityEditor.EditorApplication.isPlaying == false)
-            {
-                if (ShowJian && !string.IsNullOrWhiteSpace(Jian) && text != Jian)
-                {
-                    text = Jian;
-                }
-                else if (!ShowJian && !string.IsNullOrWhiteSpace(Fan) && text != Fan)
-                {
-                    text = Fan;
-                }
-            }
         }
 #endif
     }
