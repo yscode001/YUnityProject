@@ -13,7 +13,7 @@ public static partial class Paths
 {
     public static class Hybrid
     {
-        public static readonly string CLRDir = Path.Combine(Application.persistentDataPath, "HrbridCLR");
+        public static readonly string CLRDir = Path.Combine(Application.persistentDataPath, "HybridCLR");
 
         public const string Login = "Login";
         public static readonly string LoginFullPath = Path.Combine(CLRDir, $"{Login}.dll.bytes");

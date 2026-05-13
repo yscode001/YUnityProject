@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using YUnity;
 
 public class LoginWnd : MonoBehaviour
 {
@@ -12,6 +11,6 @@ public class LoginWnd : MonoBehaviour
     private void Start()
     {
         TipsText.text = "请输入用户名和密码";
-        TipsText.color = Color.blue;
+        TipsText.color = Color.cyan;
     }
 }

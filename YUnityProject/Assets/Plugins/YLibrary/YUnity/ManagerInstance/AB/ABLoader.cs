@@ -336,7 +336,7 @@ namespace YUnity
                 else
                 {
                     GameObject go = GameObject.Instantiate(prefab, parent, false);
-                    go.name = assetName;
+                    go.name = prefab.name;
                     go.transform.ResetLocal();
                     loaded?.Invoke(ab, go);
                 }
@@ -353,7 +353,7 @@ namespace YUnity
                 else
                 {
                     GameObject go = GameObject.Instantiate(prefab, parent, false);
-                    go.name = assetName;
+                    go.name = prefab.name;
                     go.transform.localPosition = localPosition;
                     go.transform.localEulerAngles = localEulerAngles;
                     go.transform.localScale = localScale;

@@ -87,7 +87,12 @@ namespace YUnity
         }
         private IEnumerator LoadAssetBundleAction(string abFullPath, Action<AssetBundle> complete)
         {
-            UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle("file://" + abFullPath);
+            string path = abFullPath;
+            if (abFullPath.StartsWith("http://") == false && abFullPath.StartsWith("https://") == false && abFullPath.StartsWith("file://") == false)
+            {
+                path = $"file://{abFullPath}";
+            }
+            UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(path);
             yield return request.SendWebRequest();
             if (request.result == UnityWebRequest.Result.Success)
             {

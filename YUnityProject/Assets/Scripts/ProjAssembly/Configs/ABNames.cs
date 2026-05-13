@@ -5,6 +5,8 @@ public static partial class ABNames
         public static readonly string BundleName = "Login".ToLower();
 
         public static readonly string LoginWnd = "LoginWnd.prefab".ToLower();
+
+        public static readonly string LoginRoot = "LoginRoot.prefab".ToLower();
     }
 }
 public static partial class ABNames
@@ -14,5 +16,7 @@ public static partial class ABNames
         public static readonly string BundleName = "Lobby".ToLower();
 
         public static readonly string LobbyWnd = "Lobby.prefab".ToLower();
+
+        public static readonly string LobbyRoot = "LobbyRoot.prefab".ToLower();
     }
 }
