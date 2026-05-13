@@ -63,50 +63,20 @@ public static partial class YSEditor
     {
         OpenFolder(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Library", "ScriptAssemblies"));
     }
-    [MenuItem("ys/1-常用路径/3.3-打开UniRx.dll", false, 1202)]
-    public static void OpenFolderUniRx()
-    {
-        OpenFolder(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Library", "ScriptAssemblies", "UniRx.dll"));
-    }
-    [MenuItem("ys/1-常用路径/3.4-打开SuperScrollView.dll", false, 1202)]
-    public static void OpenFolderSuperScrollView()
-    {
-        OpenFolder(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Library", "ScriptAssemblies", "SuperScrollView.dll"));
-    }
-    [MenuItem("ys/1-常用路径/3.5-打开DoTweenModules.dll", false, 1202)]
-    public static void OpenFolderDoTweenModules()
-    {
-        OpenFolder(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Library", "ScriptAssemblies", "DoTweenModules.dll"));
-    }
-    [MenuItem("ys/1-常用路径/3.6-打开YEditor.dll", false, 1202)]
-    public static void OpenFolderYEditor()
-    {
-        OpenFolder(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Library", "ScriptAssemblies", "YEditor.dll"));
-    }
-    [MenuItem("ys/1-常用路径/3.7-打开YLibrary.dll", false, 1202)]
-    public static void OpenFolderYLibrary()
-    {
-        OpenFolder(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Library", "ScriptAssemblies", "YLibrary.dll"));
-    }
-    [MenuItem("ys/1-常用路径/3.8-打开热更Login.dll", false, 1202)]
-    public static void OpenFolderLogin()
-    {
-        OpenFolder(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Library", "ScriptAssemblies", "Login.dll"));
-    }
-    [MenuItem("ys/1-常用路径/3.9-打开热更Lobby.dll", false, 1203)]
-    public static void OpenFolderLobby()
-    {
-        OpenFolder(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Library", "ScriptAssemblies", "Lobby.dll"));
-    }
-    [MenuItem("ys/1-常用路径/4-打开Packages", false, 1300)]
+    [MenuItem("ys/1-常用路径/4.1-打开Packages", false, 1300)]
     public static void OpenFolderPackages()
     {
         OpenFolder(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Packages"));
     }
-    [MenuItem("ys/1-常用路径/5-打开PersistentDataPath", false, 1400)]
+    [MenuItem("ys/1-常用路径/4.2-打开PersistentDataPath", false, 1301)]
     public static void OpenFolderPersistentDataPath()
     {
         OpenFolder(Application.persistentDataPath);
+    }
+    [MenuItem("ys/1-常用路径/4.3-打开HybridDlls", false, 1302)]
+    public static void OpenFolderHybridDlls()
+    {
+        OpenFolder(Path.Combine(Directory.GetParent(Application.dataPath).FullName, "HybridCLRData", "HotUpdateDlls"));
     }
 }
 #endregion
