@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace YUnity
 {
-    public static class ButtonExt
+    public static partial class ButtonExt
     {
         /// <summary>
         /// button.interactable = true;
@@ -28,7 +28,9 @@ namespace YUnity
                 button.interactable = false;
             }
         }
-
+    }
+    public static partial class ButtonExt
+    {
         private static readonly TimeSpan TimeInterval = TimeSpan.FromSeconds(0.5f);
 
         /// <summary>
@@ -64,6 +66,47 @@ namespace YUnity
                   .ObserveOnMainThread()
                   .Subscribe(_ => callback.Invoke())
                   .AddTo(button);
+        }
+    }
+    public static partial class ButtonExt
+    {
+        /// <summary>
+        /// Text点击扩展(会自动添加Button)：过滤单点触摸 + 0.5秒节流 + 主线程执行
+        /// </summary>
+        public static IDisposable OnClickLimit(this Text text, Action callback)
+        {
+            if (text == null || callback == null)
+            {
+                return Disposable.Empty;
+            }
+            Button btn = text.GetOrAddComponent<Button>();
+            return btn.OnClickLimit(callback);
+        }
+
+        /// <summary>
+        /// Image点击扩展(会自动添加Button)：过滤单点触摸 + 0.5秒节流 + 主线程执行
+        /// </summary>
+        public static IDisposable OnClickLimit(this Image image, Action callback)
+        {
+            if (image == null || callback == null)
+            {
+                return Disposable.Empty;
+            }
+            Button btn = image.GetOrAddComponent<Button>();
+            return btn.OnClickLimit(callback);
+        }
+
+        /// <summary>
+        /// RawImage点击扩展(会自动添加Button)：过滤单点触摸 + 0.5秒节流 + 主线程执行
+        /// </summary>
+        public static IDisposable OnClickLimit(this RawImage rawImage, Action callback)
+        {
+            if (rawImage == null || callback == null)
+            {
+                return Disposable.Empty;
+            }
+            Button btn = rawImage.GetOrAddComponent<Button>();
+            return btn.OnClickLimit(callback);
         }
     }
 }
