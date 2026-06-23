@@ -71,6 +71,18 @@ namespace YUnity
     public static partial class ButtonExt
     {
         /// <summary>
+        /// RectTransform点击扩展(会自动添加Button)：过滤单点触摸 + 0.5秒节流 + 主线程执行
+        /// </summary>
+        public static IDisposable OnClickLimit(this RectTransform rectTransform, Action callback)
+        {
+            if (rectTransform == null || callback == null)
+            {
+                return Disposable.Empty;
+            }
+            return rectTransform.GetOrAddComponent<Button>().OnClickLimit(callback);
+        }
+
+        /// <summary>
         /// Text点击扩展(会自动添加Button)：过滤单点触摸 + 0.5秒节流 + 主线程执行
         /// </summary>
         public static IDisposable OnClickLimit(this Text text, Action callback)
@@ -79,8 +91,7 @@ namespace YUnity
             {
                 return Disposable.Empty;
             }
-            Button btn = text.GetOrAddComponent<Button>();
-            return btn.OnClickLimit(callback);
+            return text.GetOrAddComponent<Button>().OnClickLimit(callback);
         }
 
         /// <summary>
@@ -92,8 +103,7 @@ namespace YUnity
             {
                 return Disposable.Empty;
             }
-            Button btn = image.GetOrAddComponent<Button>();
-            return btn.OnClickLimit(callback);
+            return image.GetOrAddComponent<Button>().OnClickLimit(callback);
         }
 
         /// <summary>
@@ -105,8 +115,7 @@ namespace YUnity
             {
                 return Disposable.Empty;
             }
-            Button btn = rawImage.GetOrAddComponent<Button>();
-            return btn.OnClickLimit(callback);
+            return rawImage.GetOrAddComponent<Button>().OnClickLimit(callback);
         }
     }
 }
