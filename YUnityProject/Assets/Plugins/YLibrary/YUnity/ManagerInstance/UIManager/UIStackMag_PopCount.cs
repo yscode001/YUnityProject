@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace YUnity
@@ -10,11 +9,11 @@ namespace YUnity
         /// <summary>
         /// Pop指定数量的页面，即连续Pop几次
         /// </summary>
-        public void PopCount(int popCount, PopReason popReason, Action<bool> complete = null)
+        public void PopCount(int popCount, PopReason popReason, Action<int> complete = null)
         {
             if (_stack.Count == 0 || popCount <= 0 || IsPushingOrPoping)
             {
-                complete?.Invoke(false);
+                complete?.Invoke(0);
                 return;
             }
             IsPushingOrPoping = true;
@@ -24,7 +23,7 @@ namespace YUnity
             List<UIStackBaseWnd> willPopWnds = new List<UIStackBaseWnd>();
             for (int i = _stack.Count - 1; i >= 0; i--)
             {
-                if (willPopTotalCount <= willPopWnds.Count)
+                if (willPopWnds.Count >= willPopTotalCount)
                 {
                     break;
                 }
@@ -42,15 +41,14 @@ namespace YUnity
                 item.OnExit(popReason);
             }
 
-            // 4、底下的页面恢复
-            if (_stack.Count > 0)
-            {
-                _stack.LastOrDefault().OnResume();
-            }
-
-            // 5、完成
+            // 4、修改栈的完成状态
             IsPushingOrPoping = false;
-            complete?.Invoke(true);
+
+            // 5、新栈顶页面的恢复
+            ResumeNewTopWnd_AfterPop();
+
+            // 6、回调结果
+            complete?.Invoke(willPopTotalCount);
         }
     }
 }

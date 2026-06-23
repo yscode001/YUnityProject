@@ -19,21 +19,13 @@ namespace YUnity
         }
     }
     #endregion
-    #region 定义外界可使用的属性和方法
-    public partial class UIStackMag
-    {
-        private readonly ReactiveCollection<UIStackBaseWnd> _stack = new ReactiveCollection<UIStackBaseWnd>();
-        public IReadOnlyReactiveCollection<UIStackBaseWnd> Stack => _stack;
-        public bool IsPushingOrPoping { get; private set; } = false;
 
-        public UIStackBaseWnd GetTopWnd() => _stack.LastOrDefault();
-        public bool ContainsWnd(UIStackBaseWnd wnd) => _stack.Contains(wnd);
-        public bool ContainsWnd(string wndName) => _stack.FirstOrDefault(m => m.name == wndName) != null;
-    }
-    #endregion
-    #region 工具方法，整理页面可见性
+    #region 内部工具方法
     public partial class UIStackMag
     {
+        /// <summary>
+        /// 整理页面可见性
+        /// </summary>
         internal void VisibilityChange_AfterStackChanged()
         {
             bool topWndIsNewPage = false;
@@ -51,6 +43,44 @@ namespace YUnity
                 topWndIsNewPage = wnd.PageType == PageType.NewPage;
             }
         }
+
+        /// <summary>
+        /// 新栈顶页面的恢复
+        /// </summary>
+        internal void ResumeNewTopWnd_AfterPop()
+        {
+            if (_stack.Count > 0)
+            {
+                _stack.LastOrDefault().OnResume();
+            }
+        }
+    }
+    #endregion
+
+    #region 定义外界可使用的属性和方法
+    public partial class UIStackMag
+    {
+        private readonly ReactiveCollection<UIStackBaseWnd> _stack = new ReactiveCollection<UIStackBaseWnd>();
+        public IReadOnlyReactiveCollection<UIStackBaseWnd> Stack => _stack;
+
+        public bool IsPushingOrPoping { get; private set; } = false;
+
+        public UIStackBaseWnd GetTopWnd() => _stack.LastOrDefault();
+        public string GetTopWndName()
+        {
+            UIStackBaseWnd topWnd = _stack.LastOrDefault();
+            if (topWnd == null)
+            {
+                return null;
+            }
+            return topWnd.name;
+        }
+
+        public bool ContainsWnd(UIStackBaseWnd wnd) => _stack.Contains(wnd);
+        public bool ContainsWnd(UIStackBaseWnd wnd1, UIStackBaseWnd wnd2) => _stack.Contains(wnd1) && _stack.Contains(wnd2);
+
+        public bool ContainsWnd(string wndName) => _stack.FirstOrDefault(m => m.name == wndName) != null;
+        public bool ContainsWnd(string wndName1, string wndName2) => _stack.FirstOrDefault(m => m.name == wndName1) != null && _stack.FirstOrDefault(m => m.name == wndName2) != null;
     }
     #endregion
 }

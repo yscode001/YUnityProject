@@ -6,14 +6,11 @@ namespace YUnity
 {
     public partial class UIStackMag
     {
-        private bool DoBeforePushAniStart(UIStackBaseWnd wnd, Transform parent, PageType pageType, Action<bool> complete = null)
+        private bool DoBeforePushAniStart(UIStackBaseWnd wnd, Transform parent, PageType pageType, Action<int> complete = null)
         {
-            if (wnd == null ||
-                _stack.Contains(wnd) ||
-                (_stack.Count > 0 && _stack.LastOrDefault().name == wnd.name) ||
-                IsPushingOrPoping)
+            if (wnd == null || ContainsWnd(wnd) || GetTopWndName() == wnd.name || IsPushingOrPoping)
             {
-                complete?.Invoke(false);
+                complete?.Invoke(0);
                 return true;
             }
             IsPushingOrPoping = true;
@@ -30,7 +27,7 @@ namespace YUnity
             wnd.BeforePush();
             return false;
         }
-        private void DoAfterPushAniOver(UIStackBaseWnd wnd, PageType pageType, Action<bool> complete = null)
+        private void DoAfterPushAniOver(UIStackBaseWnd wnd, PageType pageType, Action<int> complete = null)
         {
             // 1.入栈
             _stack.Add(wnd);
@@ -44,10 +41,10 @@ namespace YUnity
             // 4.执行OnPush
             wnd.OnPush();
             // 5.回调结果
-            complete?.Invoke(true);
+            complete?.Invoke(1);
         }
 
-        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, PushAni pushAni, Action<bool> complete = null)
+        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, PushAni pushAni, Action<int> complete = null)
         {
             if (DoBeforePushAniStart(wnd, parent, pageType, complete))
             {

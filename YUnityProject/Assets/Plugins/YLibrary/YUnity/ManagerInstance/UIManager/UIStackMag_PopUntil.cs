@@ -7,14 +7,11 @@ namespace YUnity
         /// <summary>
         /// 一直pop下去，直到遇到wndName为止，wndName不会pop
         /// </summary>
-        /// <param name="wndName"></param>
-        /// <param name="popReason"></param>
-        /// <param name="complete"></param>
-        public void PopUntil(string wndName, PopReason popReason, Action<bool> complete = null)
+        public void PopUntil(string wndName, PopReason popReason, Action<int> complete = null)
         {
             if (_stack.Count == 0 || IsPushingOrPoping)
             {
-                complete?.Invoke(false);
+                complete?.Invoke(0);
                 return;
             }
             int willPopCount = 0;
@@ -31,7 +28,7 @@ namespace YUnity
             }
             if (willPopCount == 0)
             {
-                complete?.Invoke(false);
+                complete?.Invoke(0);
             }
             else
             {
@@ -42,14 +39,11 @@ namespace YUnity
         /// <summary>
         /// 一直pop下去，直到遇到wnd为止，wnd不会pop
         /// </summary>
-        /// <param name="wnd"></param>
-        /// <param name="popReason"></param>
-        /// <param name="complete"></param>
-        public void PopUntil(UIStackBaseWnd wnd, PopReason popReason, Action<bool> complete = null)
+        public void PopUntil(UIStackBaseWnd wnd, PopReason popReason, Action<int> complete = null)
         {
             if (_stack.Count == 0 || IsPushingOrPoping)
             {
-                complete?.Invoke(false);
+                complete?.Invoke(0);
                 return;
             }
             int willPopCount = 0;
@@ -66,7 +60,7 @@ namespace YUnity
             }
             if (willPopCount == 0)
             {
-                complete?.Invoke(false);
+                complete?.Invoke(0);
             }
             else
             {

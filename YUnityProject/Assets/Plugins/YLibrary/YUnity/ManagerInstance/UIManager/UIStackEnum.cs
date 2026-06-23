@@ -17,7 +17,7 @@ namespace YUnity
     /// <summary>
     /// 页面状态
     /// </summary>
-    public enum PageStateType
+    public enum PageState
     {
         BeforePush,
         OnPush,

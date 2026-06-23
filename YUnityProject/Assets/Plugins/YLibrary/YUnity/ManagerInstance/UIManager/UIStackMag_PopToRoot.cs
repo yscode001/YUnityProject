@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace YUnity
 {
@@ -9,11 +8,11 @@ namespace YUnity
         /// <summary>
         /// Pop至栈底页面
         /// </summary>
-        public void PopToRoot(PopReason popReason, Action<bool> complete = null)
+        public void PopToRoot(PopReason popReason, Action<int> complete = null)
         {
             if (_stack.Count <= 1 || IsPushingOrPoping)
             {
-                complete?.Invoke(false);
+                complete?.Invoke(0);
                 return;
             }
             IsPushingOrPoping = true;
@@ -36,15 +35,14 @@ namespace YUnity
                 item.OnExit(popReason);
             }
 
-            // 4、底下的页面恢复
-            if (_stack.Count > 0)
-            {
-                _stack.LastOrDefault().OnResume();
-            }
-
-            // 5、完成
+            // 4、修改栈的完成状态
             IsPushingOrPoping = false;
-            complete?.Invoke(true);
+
+            // 5、新栈顶页面的恢复
+            ResumeNewTopWnd_AfterPop();
+
+            // 6、回调结果
+            complete?.Invoke(willPopWnds.Count);
         }
     }
 }

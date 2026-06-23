@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using UniRx;
 using UnityEngine;
@@ -40,12 +39,12 @@ namespace YUnity
         /// </summary>
         public PageType PageType { get; private set; } = PageType.NewPage;
 
-        private readonly ReactiveProperty<PageStateType> _pageState = new ReactiveProperty<PageStateType>(YUnity.PageStateType.UnKnown);
+        private readonly ReactiveProperty<PageState> _pageState = new ReactiveProperty<PageState>(YUnity.PageState.UnKnown);
 
         /// <summary>
         /// 页面状态
         /// </summary>
-        public IReadOnlyReactiveProperty<PageStateType> PageState => _pageState.ToReadOnlyReactiveProperty();
+        public IReadOnlyReactiveProperty<PageState> PageState => _pageState.ToReadOnlyReactiveProperty();
     }
     #endregion
     #region 自定义生命周期函数
@@ -54,54 +53,54 @@ namespace YUnity
         public virtual void BeforePush()
         {
             CanvasGroupY.blocksRaycasts = false;
-            if (_pageState.Value != PageStateType.BeforePush)
+            if (_pageState.Value != YUnity.PageState.BeforePush)
             {
-                _pageState.Value = PageStateType.BeforePush;
+                _pageState.Value = YUnity.PageState.BeforePush;
             }
         }
         public virtual void OnPush()
         {
             CanvasGroupY.alpha = 1;
             CanvasGroupY.blocksRaycasts = true;
-            if (_pageState.Value != PageStateType.OnPush)
+            if (_pageState.Value != YUnity.PageState.OnPush)
             {
-                _pageState.Value = PageStateType.OnPush;
+                _pageState.Value = YUnity.PageState.OnPush;
             }
         }
 
         public virtual void OnPause()
         {
             CanvasGroupY.blocksRaycasts = false;
-            if (_pageState.Value != PageStateType.OnPause)
+            if (_pageState.Value != YUnity.PageState.OnPause)
             {
-                _pageState.Value = PageStateType.OnPause;
+                _pageState.Value = YUnity.PageState.OnPause;
             }
         }
 
         public virtual void OnResume()
         {
             CanvasGroupY.blocksRaycasts = true;
-            if (_pageState.Value != PageStateType.OnResume)
+            if (_pageState.Value != YUnity.PageState.OnResume)
             {
-                _pageState.Value = PageStateType.OnResume;
+                _pageState.Value = YUnity.PageState.OnResume;
             }
         }
 
         public virtual void WillExit(PopReason popReason)
         {
             CanvasGroupY.blocksRaycasts = false;
-            if (_pageState.Value != PageStateType.WillExit)
+            if (_pageState.Value != YUnity.PageState.WillExit)
             {
-                _pageState.Value = PageStateType.WillExit;
+                _pageState.Value = YUnity.PageState.WillExit;
             }
         }
 
         public virtual void OnExit(PopReason popReason)
         {
             CanvasGroupY.blocksRaycasts = false;
-            if (_pageState.Value != PageStateType.OnExit)
+            if (_pageState.Value != YUnity.PageState.OnExit)
             {
-                _pageState.Value = PageStateType.OnExit;
+                _pageState.Value = YUnity.PageState.OnExit;
             }
             _pageState.Dispose();
             DestroyImmediate(gameObject);
@@ -324,110 +323,6 @@ namespace YUnity
         protected virtual Sequence CreateCustomPopAniSequence()
         {
             return null;
-        }
-    }
-    #endregion
-    #region 添加push快捷方式，实质还是调用的UIStackMag的push方法
-    public partial class UIStackBaseWnd
-    {
-        /// <summary>
-        /// Push新页面或新弹框，实质还是调用的UIStackMag的push方法
-        /// </summary>
-        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, PushAni pushAni, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.Push(wnd, parent, pageType, pushAni, complete);
-        }
-
-        /// <summary>
-        /// Push自己，实质还是调用的UIStackMag的push方法
-        /// </summary>
-        public void PushThis(Transform parent, PageType pageType, PushAni pushAni, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.Push(this, parent, pageType, pushAni, complete);
-        }
-
-        /// <summary>
-        /// Push自己，实质还是调用的UIStackMag的push方法
-        /// </summary>
-        public void PushSelf(Transform parent, PageType pageType, PushAni pushAni, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.Push(this, parent, pageType, pushAni, complete);
-        }
-    }
-    #endregion
-    #region 添加pop的快捷方式，实质还是调用的UIStackMag的pop方法
-    public partial class UIStackBaseWnd
-    {
-        /// <summary>
-        /// Pop掉栈顶页面，实质还是调用的UIStackMag的pop方法
-        /// </summary>
-        public void Pop(PopReason popReason, PopAni popAni, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.Pop(popReason, popAni, complete);
-        }
-
-        /// <summary>
-        /// Pop所有页面，实质还是调用的UIStackMag的pop方法
-        /// </summary>
-        public void PopAll(PopReason popReason, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.PopAll(popReason, complete);
-        }
-
-        /// <summary>
-        /// Pop所有底下的页面，除了栈顶页面，实质还是调用的UIStackMag的pop方法
-        /// </summary>
-        public void PopBottoms(PopReason popReason, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.PopBottoms(popReason, complete);
-        }
-
-        /// <summary>
-        /// Pop指定数量的页面，即连续Pop几次，实质还是调用的UIStackMag的pop方法
-        /// </summary>
-        public void PopCount(int popCount, PopReason popReason, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.PopCount(popCount, popReason, complete);
-        }
-
-        /// <summary>
-        /// Pop所有中间的页面，除了栈顶和栈底页面，实质还是调用的UIStackMag的pop方法
-        /// </summary>
-        public void PopMiddles(PopReason popReason, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.PopMiddles(popReason, complete);
-        }
-
-        /// <summary>
-        /// Pop至栈底页面，实质还是调用的UIStackMag的pop方法
-        /// </summary>
-        public void PopToRoot(PopReason popReason, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.PopToRoot(popReason, complete);
-        }
-
-        /// <summary>
-        /// Pop掉指定的页面，实质还是调用的UIStackMag的pop方法
-        /// </summary>
-        public void PopWnd(UIStackBaseWnd wnd, PopReason popReason, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.PopWnd(wnd, popReason, complete);
-        }
-
-        /// <summary>
-        /// Pop掉自己，实质还是调用的UIStackMag的pop方法
-        /// </summary>
-        public void PopThis(PopReason popReason, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.PopWnd(this, popReason, complete);
-        }
-
-        /// <summary>
-        /// Pop掉自己，实质还是调用的UIStackMag的pop方法
-        /// </summary>
-        public void PopSelf(PopReason popReason, Action<bool> complete = null)
-        {
-            UIStackMag.Instance.PopWnd(this, popReason, complete);
         }
     }
     #endregion

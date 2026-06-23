@@ -8,11 +8,11 @@ namespace YUnity
         /// <summary>
         /// Pop掉指定的页面
         /// </summary>
-        public void PopWnd(UIStackBaseWnd wnd, PopReason popReason, Action<bool> complete = null)
+        public void PopWnd(UIStackBaseWnd wnd, PopReason popReason, Action<int> complete = null)
         {
             if (wnd == null || !_stack.Contains(wnd) || IsPushingOrPoping)
             {
-                complete?.Invoke(false);
+                complete?.Invoke(0);
                 return;
             }
             if (wnd == _stack.LastOrDefault())
@@ -36,7 +36,7 @@ namespace YUnity
 
                 // 4、完成
                 IsPushingOrPoping = false;
-                complete?.Invoke(true);
+                complete?.Invoke(1);
             }
         }
     }

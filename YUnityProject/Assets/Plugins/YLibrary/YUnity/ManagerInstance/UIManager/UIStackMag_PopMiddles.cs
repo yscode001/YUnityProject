@@ -8,11 +8,11 @@ namespace YUnity
         /// <summary>
         /// Pop所有中间的页面，除了栈顶和栈底页面
         /// </summary>
-        public void PopMiddles(PopReason popReason, Action<bool> complete = null)
+        public void PopMiddles(PopReason popReason, Action<int> complete = null)
         {
             if (_stack.Count <= 2 || IsPushingOrPoping)
             {
-                complete?.Invoke(false);
+                complete?.Invoke(0);
                 return;
             }
             IsPushingOrPoping = true;
@@ -37,7 +37,7 @@ namespace YUnity
 
             // 5、完成
             IsPushingOrPoping = false;
-            complete?.Invoke(true);
+            complete?.Invoke(willPopWnds.Count);
         }
     }
 }

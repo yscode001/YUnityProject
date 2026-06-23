@@ -5,29 +5,23 @@ namespace YUnity
 {
     public partial class UIStackMag
     {
-        private void DoAfterPopAniOver(UIStackBaseWnd wnd, PopReason popReason, Action<bool> complete = null)
+        private void DoAfterPopAniOver(UIStackBaseWnd wnd, PopReason popReason, Action<int> complete = null)
         {
             // 1.本页面退出
             wnd.OnExit(popReason);
-            // 2.底下的页面恢复
-            if (_stack.Count > 0)
-            {
-                _stack.LastOrDefault().OnResume();
-            }
-            // 3.修改栈的完成状态
+            // 2.修改栈的完成状态
             IsPushingOrPoping = false;
+            // 3.新栈顶页面的恢复
+            ResumeNewTopWnd_AfterPop();
             // 4.回调结果
-            complete?.Invoke(true);
+            complete?.Invoke(1);
         }
 
-        /// <summary>
-        /// Pop栈顶页面
-        /// </summary>
-        public void Pop(PopReason popReason, PopAni popAni, Action<bool> complete = null)
+        public void Pop(PopReason popReason, PopAni popAni, Action<int> complete = null)
         {
             if (_stack.Count == 0 || IsPushingOrPoping)
             {
-                complete?.Invoke(false);
+                complete?.Invoke(0);
                 return;
             }
             IsPushingOrPoping = true;
