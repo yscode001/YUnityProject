@@ -117,5 +117,17 @@ namespace YUnity
             }
             return rawImage.GetOrAddComponent<Button>().OnClickLimit(callback);
         }
+
+        /// <summary>
+        /// EmptyRaycast点击扩展(会自动添加Button)：过滤单点触摸 + 0.5秒节流 + 主线程执行
+        /// </summary>
+        public static IDisposable OnClickLimit(this EmptyRaycast emptyRaycast, Action callback)
+        {
+            if (emptyRaycast == null || callback == null)
+            {
+                return Disposable.Empty;
+            }
+            return emptyRaycast.GetOrAddComponent<Button>().OnClickLimit(callback);
+        }
     }
 }
