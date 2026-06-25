@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace YUnity
 {
-    public class ColorUtil
+    public static class ColorUtil
     {
         /// <summary>
         /// 创建颜色
@@ -47,6 +47,25 @@ namespace YUnity
             float gv = gc * 1.0f / 255.0f;
             float bv = bc * 1.0f / 255.0f;
             return new Color(rv, gv, bv, ac);
+        }
+
+        public static Color Color(string hex)
+        {
+            if (ColorUtility.TryParseHtmlString(hex, out Color color))
+            {
+                return color;
+            }
+            return UnityEngine.Color.clear;
+        }
+
+        public static string RGBString(this Color color)
+        {
+            return ColorUtility.ToHtmlStringRGB(color);
+        }
+
+        public static string RGBAString(this Color color)
+        {
+            return ColorUtility.ToHtmlStringRGBA(color);
         }
     }
 }
