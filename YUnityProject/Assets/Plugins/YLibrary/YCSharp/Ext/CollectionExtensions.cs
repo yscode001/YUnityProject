@@ -17,19 +17,9 @@ namespace YCSharp
         public static bool HasAny<TKey, TValue>(this Dictionary<TKey, TValue> dict)
             => InternalHasAny(dict?.Count);
 
-        /// <summary>只读字典不为 null 且有元素</summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasAny<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict)
-            => InternalHasAny(dict?.Count);
-
         /// <summary>通用 ICollection 集合不为 null 且有元素</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasAny<T>(this ICollection<T> collection)
-            => InternalHasAny(collection?.Count);
-
-        /// <summary>只读集合不为 null 且有元素</summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasAny<T>(this IReadOnlyCollection<T> collection)
             => InternalHasAny(collection?.Count);
 
         /// <summary>泛型枚举是否包含任意元素（优先读取Count，无Count则迭代一次）</summary>
@@ -63,17 +53,9 @@ namespace YCSharp
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNotEmpty<TKey, TValue>(this Dictionary<TKey, TValue> dict) => dict.HasAny();
 
-        /// <summary>只读字典不为 null 且有元素，等价 HasAny</summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNotEmpty<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict) => dict.HasAny();
-
         /// <summary>通用 ICollection 集合不为 null 且有元素，等价 HasAny</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNotEmpty<T>(this ICollection<T> collection) => collection.HasAny();
-
-        /// <summary>只读集合不为 null 且有元素，等价 HasAny</summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNotEmpty<T>(this IReadOnlyCollection<T> collection) => collection.HasAny();
 
         /// <summary>泛型枚举是否包含任意元素，等价 HasAny</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -94,19 +76,9 @@ namespace YCSharp
         public static bool IsEmpty<TKey, TValue>(this Dictionary<TKey, TValue> dict)
             => InternalIsEmpty(dict?.Count);
 
-        /// <summary>只读字典为 null 或无元素</summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsEmpty<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict)
-            => InternalIsEmpty(dict?.Count);
-
         /// <summary>ICollection 为 null 或无元素</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsEmpty<T>(this ICollection<T> collection)
-            => InternalIsEmpty(collection?.Count);
-
-        /// <summary>只读集合为 null 或无元素</summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsEmpty<T>(this IReadOnlyCollection<T> collection)
             => InternalIsEmpty(collection?.Count);
 
         /// <summary>枚举为 null 或无元素</summary>
@@ -127,11 +99,6 @@ namespace YCSharp
         /// <summary>列表不为 null，且下标 index 合法可访问（List<T>等）</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool HasIndex<T>(this IList<T> list, int index)
-            => list.HasAny() && index >= 0 && index < list.Count;
-
-        /// <summary>只读列表不为 null，且下标 index 合法可访问（ReadOnlyCollection<T>）</summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasIndex<T>(this IReadOnlyList<T> list, int index)
             => list.HasAny() && index >= 0 && index < list.Count;
         #endregion
     }
