@@ -309,4 +309,30 @@ namespace YOtherLibraryExt
             _mainThreadId != -1 &&
             System.Threading.Thread.CurrentThread.ManagedThreadId == _mainThreadId;
     }
+
+    #region 倒计时，到0结束
+    public static partial class RxExt
+    {
+        // 缓存1秒Timespan常量，避免重复分配GC
+        private static readonly TimeSpan OneSecond = TimeSpan.FromSeconds(1);
+
+        /// <summary>
+        /// 倒计时，到0结束
+        /// </summary>
+        public static IDisposable CountDown(int totalSeconds, Action<int> current, Action completed)
+        {
+            // 小于等于0直接立刻回调完成
+            if (totalSeconds <= 0)
+            {
+                current?.Invoke(0);
+                completed?.Invoke();
+                return Disposable.Empty;
+            }
+            return Observable.Timer(TimeSpan.Zero, OneSecond)
+                .Select((_, index) => totalSeconds - index) // 直接算出剩余时间
+                .Take(totalSeconds + 1) // 0 ~ totalSeconds 全部走完
+                .Subscribe(remain => current?.Invoke(remain), () => completed?.Invoke()); // 流自然结束时只执行一次完成回调
+        }
+    }
+    #endregion
 }
