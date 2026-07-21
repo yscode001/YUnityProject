@@ -29,23 +29,6 @@ namespace YUnity
     }
 
     /// <summary>
-    /// Pop原因
-    /// </summary>
-    public enum PopReason
-    {
-        Close,
-        Cancel,
-        Back,
-        Exit,
-        Destroy,
-        Submit,
-        Delete,
-        Done,
-        Send,
-        Confirm,
-    }
-
-    /// <summary>
     /// Push动画
     /// </summary>
     public enum PushAni

@@ -8,17 +8,18 @@ namespace YUnity
         /// <summary>
         /// Pop掉指定的页面
         /// </summary>
-        public void PopWnd(UIStackBaseWnd wnd, PopReason popReason, Action<int> complete = null)
+        public void PopWnd(UIStackBaseWnd wnd, Action<int> complete = null)
         {
             if (wnd == null || !_stack.Contains(wnd) || IsPushingOrPoping)
             {
                 complete?.Invoke(0);
                 return;
             }
+
             if (wnd == _stack.LastOrDefault())
             {
                 // 栈顶页面
-                Pop(popReason, PopAni.None, complete);
+                Pop(PopAni.None, complete);
             }
             else
             {
@@ -31,8 +32,8 @@ namespace YUnity
                 VisibilityChange_AfterStackChanged();
 
                 // 3、页面退出
-                wnd.WillExit(popReason);
-                wnd.OnExit(popReason);
+                wnd.WillExit();
+                wnd.OnExit();
 
                 // 4、完成
                 IsPushingOrPoping = false;

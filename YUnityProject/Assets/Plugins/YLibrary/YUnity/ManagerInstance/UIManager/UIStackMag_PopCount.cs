@@ -9,13 +9,14 @@ namespace YUnity
         /// <summary>
         /// Pop指定数量的页面，即连续Pop几次
         /// </summary>
-        public void PopCount(int popCount, PopReason popReason, Action<int> complete = null)
+        public void PopCount(int popCount, Action<int> complete = null)
         {
             if (_stack.Count == 0 || popCount <= 0 || IsPushingOrPoping)
             {
                 complete?.Invoke(0);
                 return;
             }
+
             IsPushingOrPoping = true;
 
             // 1、计算需要pop掉的页面，并从栈中移除
@@ -27,6 +28,7 @@ namespace YUnity
                 {
                     break;
                 }
+
                 willPopWnds.Add(_stack[i]);
                 _stack.RemoveAt(i);
             }
@@ -37,8 +39,8 @@ namespace YUnity
             // 3、退出页面
             foreach (var item in willPopWnds)
             {
-                item.WillExit(popReason);
-                item.OnExit(popReason);
+                item.WillExit();
+                item.OnExit();
             }
 
             // 4、修改栈的完成状态

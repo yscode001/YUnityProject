@@ -8,13 +8,14 @@ namespace YUnity
         /// <summary>
         /// Pop至栈底页面
         /// </summary>
-        public void PopToRoot(PopReason popReason, Action<int> complete = null)
+        public void PopToRoot(Action<int> complete = null)
         {
             if (_stack.Count <= 1 || IsPushingOrPoping)
             {
                 complete?.Invoke(0);
                 return;
             }
+
             IsPushingOrPoping = true;
 
             // 1、计算需要pop掉的页面，并从栈中移除
@@ -31,8 +32,8 @@ namespace YUnity
             // 3、退出页面
             foreach (var item in willPopWnds)
             {
-                item.WillExit(popReason);
-                item.OnExit(popReason);
+                item.WillExit();
+                item.OnExit();
             }
 
             // 4、修改栈的完成状态

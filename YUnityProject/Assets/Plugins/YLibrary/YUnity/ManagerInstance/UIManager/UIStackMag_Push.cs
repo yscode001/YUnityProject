@@ -6,13 +6,15 @@ namespace YUnity
 {
     public partial class UIStackMag
     {
-        private bool DoBeforePushAniStart(UIStackBaseWnd wnd, Transform parent, PageType pageType, Action<int> complete = null)
+        private bool DoBeforePushAniStart(UIStackBaseWnd wnd, Transform parent, PageType pageType,
+            Action<int> complete = null)
         {
             if (wnd == null || ContainsWnd(wnd) || GetTopWndName() == wnd.name || IsPushingOrPoping)
             {
                 complete?.Invoke(0);
                 return true;
             }
+
             IsPushingOrPoping = true;
             // 先暂停底部页面
             UIStackBaseWnd bottomWnd = _stack.LastOrDefault();
@@ -20,6 +22,7 @@ namespace YUnity
             {
                 bottomWnd.OnPause();
             }
+
             // 再添加新页面
             wnd.RectTransformY.SetParent(parent, false);
             wnd.SetupPageType(pageType);
@@ -27,6 +30,7 @@ namespace YUnity
             wnd.BeforePush();
             return false;
         }
+
         private void DoAfterPushAniOver(UIStackBaseWnd wnd, PageType pageType, Action<int> complete = null)
         {
             // 1.入栈
@@ -36,6 +40,7 @@ namespace YUnity
                 // 2.如果添加的是新页面，整理页面可见性
                 VisibilityChange_AfterStackChanged();
             }
+
             // 3.修改栈的完成状态
             IsPushingOrPoping = false;
             // 4.执行OnPush
@@ -44,16 +49,15 @@ namespace YUnity
             complete?.Invoke(1);
         }
 
-        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, PushAni pushAni, Action<int> complete = null)
+        public void Push(UIStackBaseWnd wnd, Transform parent, PageType pageType, PushAni pushAni,
+            Action<int> complete = null)
         {
             if (DoBeforePushAniStart(wnd, parent, pageType, complete))
             {
                 return;
             }
-            wnd.SetupPageTypeAndRunPushAni(pageType, pushAni, () =>
-            {
-                DoAfterPushAniOver(wnd, pageType, complete);
-            });
+
+            wnd.SetupPageTypeAndRunPushAni(pageType, pushAni, () => { DoAfterPushAniOver(wnd, pageType, complete); });
         }
     }
 }
