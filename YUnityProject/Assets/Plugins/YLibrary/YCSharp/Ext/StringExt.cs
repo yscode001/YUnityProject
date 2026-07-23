@@ -12,6 +12,8 @@ namespace YCSharp
 {
     public static class StringExt
     {
+        public static bool IsNullOrWhiteSpace(this string str) => string.IsNullOrWhiteSpace(str);
+        
         public static byte[] ToByteArray(this string str, Encoding encoding)
         {
             if (string.IsNullOrWhiteSpace(str))
