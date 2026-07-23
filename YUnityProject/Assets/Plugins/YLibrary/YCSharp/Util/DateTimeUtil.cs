@@ -8,65 +8,15 @@ namespace YCSharp
     public static class DateTimeUtil
     {
         /// <summary>
-        /// 时间戳计时开始时间
+        /// 当前 UTC 时间对应的 Unix 时间戳（毫秒)
+        /// DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
         /// </summary>
-        private static readonly DateTime TimeStampStartTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
+        public static long GetUTCMilliseconds() => DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        
         /// <summary>
-        /// DateTime转换为10位时间戳（单位：秒）
+        /// 当前 UTC 时间对应的 Unix 时间戳（秒)
+        /// DateTimeOffset.UtcNow.ToUnixTimeSeconds()
         /// </summary>
-        /// <param name="dateTime"> DateTime</param>
-        /// <returns>10位时间戳（单位：秒）</returns>
-        public static long DateTimeToTimeStamp(DateTime dateTime)
-        {
-            return (long)(dateTime.ToUniversalTime() - TimeStampStartTime).TotalSeconds;
-        }
-
-        /// <summary>
-        /// DateTime转换为13位时间戳（单位：毫秒）
-        /// </summary>
-        /// <param name="dateTime"> DateTime</param>
-        /// <returns>13位时间戳（单位：毫秒）</returns>
-        public static long DateTimeToLongTimeStamp(DateTime dateTime)
-        {
-            return (long)(dateTime.ToUniversalTime() - TimeStampStartTime).TotalMilliseconds;
-        }
-
-        /// <summary>
-        /// 10位时间戳（单位：秒）转换为DateTime
-        /// </summary>
-        /// <param name="timeStamp">10位时间戳（单位：秒）</param>
-        /// <returns>DateTime</returns>
-        public static DateTime TimeStampToDateTime(long timeStamp)
-        {
-            return TimeStampStartTime.AddSeconds(timeStamp).ToLocalTime();
-        }
-
-        /// <summary>
-        /// 13位时间戳（单位：毫秒）转换为DateTime
-        /// </summary>
-        /// <param name="longTimeStamp">13位时间戳（单位：毫秒）</param>
-        /// <returns>DateTime</returns>
-        public static DateTime LongTimeStampToDateTime(long longTimeStamp)
-        {
-            return TimeStampStartTime.AddMilliseconds(longTimeStamp).ToLocalTime();
-        }
-    }
-
-    public static class DateTimeExt
-    {
-        /// <summary>
-        /// DateTime转换为10位时间戳（单位：秒）
-        /// </summary>
-        /// <param name="dateTime"></param>
-        /// <returns></returns>
-        public static long ToTimeStamp(this DateTime dateTime) => DateTimeUtil.DateTimeToTimeStamp(dateTime);
-
-        /// <summary>
-        /// DateTime转换为13位时间戳（单位：毫秒）
-        /// </summary>
-        /// <param name="dateTime"></param>
-        /// <returns></returns>
-        public static long ToLongTimeStamp(this DateTime dateTime) => DateTimeUtil.DateTimeToLongTimeStamp(dateTime);
+        public static long GetUTCSeconds() => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
     }
 }
