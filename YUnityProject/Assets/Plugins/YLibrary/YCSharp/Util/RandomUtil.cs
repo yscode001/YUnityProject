@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace YCSharp
 {
     #region 初始化
-    public partial class RandomUtil
+    public static partial class RandomUtil
     {
         private static Random _random;
         private static Random Random => _random ??= new Random(0);
@@ -14,7 +14,7 @@ namespace YCSharp
         }
     }
     #endregion
-    public partial class RandomUtil
+    public static partial class RandomUtil
     {
         #region RandomValue
         public static int NextValue(int includeMin, int includeMax)

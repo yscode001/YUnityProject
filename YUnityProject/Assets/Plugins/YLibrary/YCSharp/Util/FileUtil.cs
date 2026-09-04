@@ -4,7 +4,7 @@ using System.Text;
 
 namespace YCSharp
 {
-    public class FileUtil
+    public static class FileUtil
     {
         /// <summary>
         /// 获取文件名字(带扩展名)

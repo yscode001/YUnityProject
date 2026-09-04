@@ -2,7 +2,7 @@
 
 namespace YCSharp
 {
-    public class DirecoryUtil
+    public static class DirecoryUtil
     {
         /// <summary>
         /// 获取最后一级文件夹的名字
